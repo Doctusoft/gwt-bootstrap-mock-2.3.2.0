@@ -1829,7 +1829,11 @@ public class Style extends JavaScriptObject {
    * Sets the display CSS property.
    */
   public final void setDisplay(Display value) {
-    setProperty(STYLE_DISPLAY, value.getCssName());
+	  if (value == null) {
+		  setProperty(STYLE_DISPLAY, null);
+	  } else {
+		  setProperty(STYLE_DISPLAY, value.getCssName());
+	  }
   }
 
   /**
@@ -2164,7 +2168,7 @@ public class Style extends JavaScriptObject {
   /**
    * Sets the value of a named property.
    */
-  private native void setPropertyImpl(String name, String value) /*-{
-    this[name] = value;
-  }-*/;
+  private void setPropertyImpl(String name, String value) {
+	  // TODO
+  }
 }

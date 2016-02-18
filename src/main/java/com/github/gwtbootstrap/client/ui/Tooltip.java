@@ -123,8 +123,11 @@ public class Tooltip extends HoverBase {
         });
     }-*/;
 	
-	public static native void configure(Element element, boolean animated,
-			String placement, String trigger, int showDelay, int hideDelay, String container) /*-{
+	public static void configure(Element element, boolean animated,
+			String placement, String trigger, int showDelay, int hideDelay, String container) {
+		// nothing
+	}
+	/*-{
 		$wnd.jQuery(element).tooltip({
 			animation : animated,
 			placement : placement,
@@ -137,7 +140,10 @@ public class Tooltip extends HoverBase {
 		});
 	}-*/;
 
-	public static native void changeVisibility(Element e, String visibility) /*-{
+	public static void changeVisibility(Element e, String visibility) {
+		// nothing
+	}
+	/*-{
 		$wnd.jQuery(e).tooltip(visibility);
 	}-*/;	
 	//@formatter:on
@@ -155,7 +161,10 @@ public class Tooltip extends HoverBase {
         doRemoveDataIfExists(e, dataName);
     }
 
-    private native void doRemoveDataIfExists(Element e, String dataName) /*-{
+    private void doRemoveDataIfExists(Element e, String dataName) {
+    	//nothing
+    }
+    /*-{
         var element = $wnd.jQuery(e);
         if(element.data(dataName)) {
             element.tooltip('destroy');

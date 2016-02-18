@@ -31,7 +31,7 @@ import com.google.gwt.user.client.EventListener;
  */
 public class Element extends Node {
 
-	protected Map<String, String> attributes = Maps.newHashMap();
+	public Map<String, String> attributes = Maps.newHashMap();
 	
 	protected Document document;
 	
@@ -45,6 +45,8 @@ public class Element extends Node {
 	}
 	
 	public String innerText = "";
+	
+	protected String tagName = null;
 	
   /**
    * Constant returned from {@link #getDraggable()}.
@@ -522,6 +524,8 @@ public class Element extends Node {
    * @return the element's tag name
    */
   public final String getTagName() {
+	  if (tagName != null)
+		  return tagName;
 	  TagName tagName = getClass().getAnnotation(TagName.class);
 	  if (tagName == null) {
 		  throw new RuntimeException("no tagname for " + this.getClass());

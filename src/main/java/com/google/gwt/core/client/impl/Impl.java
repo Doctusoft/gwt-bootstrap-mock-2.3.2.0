@@ -91,7 +91,10 @@ public final class Impl {
     return o.$H || (o.$H = @com.google.gwt.core.client.impl.Impl::getNextHashId()());
   }-*/;
 
-  public static native String getHostPageBaseURL() /*-{
+  public static String getHostPageBaseURL() {
+	  return "http://localhost/";
+  }
+  /*-{
     var s = $doc.location.href;
 
     // Pull off any hash.

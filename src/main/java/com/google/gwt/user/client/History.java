@@ -15,7 +15,14 @@
  */
 package com.google.gwt.user.client;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.common.collect.Lists;
+import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.impl.HistoryImpl;
 
@@ -84,6 +91,8 @@ public class History {
       BaseListenerWrapper.WrapHistory.add(listener);
     }
   }
+  
+  static List<ValueChangeHandler<String>> historyHandlers = Lists.newArrayList();
 
   /**
    * Adds a {@link com.google.gwt.event.logical.shared.ValueChangeEvent} handler
@@ -93,8 +102,14 @@ public class History {
    * @return the registration used to remove this value change handler
    */
   public static HandlerRegistration addValueChangeHandler(
-      ValueChangeHandler<String> handler) {
-    return impl != null ? impl.addValueChangeHandler(handler) : null;
+      final ValueChangeHandler<String> handler) {
+	  historyHandlers.add(handler);
+    return new HandlerRegistration() {
+		@Override
+		public void removeHandler() {
+			historyHandlers.remove(handler);
+		}
+	};
   }
 
   /**
@@ -125,10 +140,22 @@ public class History {
    * history handlers of the initial application state.
    */
   public static void fireCurrentHistoryState() {
-    if (impl != null) {
-      String token = getToken();
-      impl.fireHistoryChangedImpl(token);
-    }
+	  for (final ValueChangeHandler<String> handler : new ArrayList<ValueChangeHandler<String>>(historyHandlers)) {
+		  ValueChangeEvent.getType();
+		  ValueChangeEvent.fire(new HasValueChangeHandlers<String>() {
+
+			@Override
+			public void fireEvent(GwtEvent<?> event) {
+				handler.onValueChange((ValueChangeEvent<String>) event);
+			}
+
+			@Override
+			public HandlerRegistration addValueChangeHandler(ValueChangeHandler<String> handler) {
+				return null;
+			}
+			  
+		}, Window.Location.getHash());
+	  }
   }
 
   /**

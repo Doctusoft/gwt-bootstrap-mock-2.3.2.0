@@ -9,6 +9,8 @@ import java.util.Map;
 import org.mockito.Mockito;
 
 import com.google.appengine.repackaged.com.google.api.client.util.Maps;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
@@ -31,13 +33,23 @@ public class RemoteServiceProxy<T extends RemoteService> {
 						public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 							if (method.getDeclaringClass().equals(asyncClass)) {
 								// transform the call to the synchronous spy (which is easier to mock for testing)
-								AsyncCallback callback = (AsyncCallback) args[args.length - 1];
+								final AsyncCallback callback = (AsyncCallback) args[args.length - 1];
 								Method syncMethod = remoteServiceClass.getMethod(method.getName(), Arrays.copyOf(method.getParameterTypes(), method.getParameterTypes().length -1));
 								try {
-									Object result = syncMethod.invoke(spy, Arrays.copyOf(args, args.length - 1));
-									callback.onSuccess(result);
-								} catch (Exception e) {
-									callback.onFailure(e);
+									final Object result = syncMethod.invoke(spy, Arrays.copyOf(args, args.length - 1));
+									Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+										@Override
+										public void execute() {
+											callback.onSuccess(result);
+										}
+									});
+								} catch (final Exception e) {
+									Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+										@Override
+										public void execute() {
+											callback.onFailure(e);
+										}
+									});
 								}
 								return null;
 							}

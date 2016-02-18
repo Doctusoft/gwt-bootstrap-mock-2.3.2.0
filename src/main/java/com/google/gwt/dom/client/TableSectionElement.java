@@ -40,7 +40,8 @@ public class TableSectionElement extends Element {
     return (TableSectionElement) elem;
   }
 
-  protected TableSectionElement() {
+  public TableSectionElement(String tagName) {
+	  this.tagName = tagName;
   }
 
   /**

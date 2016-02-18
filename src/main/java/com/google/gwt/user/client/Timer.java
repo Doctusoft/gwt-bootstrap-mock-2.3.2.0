@@ -63,10 +63,8 @@ public abstract class Timer {
   }
 
   private static void clearTimeout(int id) {
-	  Timer timer = timersById.get(id);
-	  if (timer != null) {
-		  timer.cancel();
-	  }
+	  Timer timer = timersById.remove(id);
+	  timers.remove(timer);
   }
 
   private static synchronized int createInterval(Timer timer, int period) {

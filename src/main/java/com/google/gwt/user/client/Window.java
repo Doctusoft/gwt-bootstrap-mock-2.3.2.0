@@ -120,6 +120,12 @@ public class Window {
   public static class Location {
     private static String cachedQueryString = "";
     private static Map<String, List<String>> listParamMap;
+	private static String path = "";
+	private static String port = "80";
+	private static String protocol = "http";
+	private static String queryString = "";
+	private static String bost = "localhost";
+	private static String hash = "";
 
     /**
      * Assigns the window to a new URL. All GWT state will be lost.
@@ -170,7 +176,7 @@ public class Window {
      * @return the string to the right of the URL's hash.
      */
     public static String getHash() {
-      return "";
+      return hash;
     }
 
     /**
@@ -179,7 +185,7 @@ public class Window {
      * @return the host and port name
      */
     public static String getHost() {
-    	return "localhost";
+    	return bost;
     }
 
     /**
@@ -196,7 +202,10 @@ public class Window {
      * 
      * @return the URL
      */
-    public static native String getHref() /*-{
+    public static String getHref() {
+    	return getProtocol() + "://" + getHost() + ":" + getPort() + "/" + getPath() + "?" + getQueryString();
+    }
+    /*-{
       return $wnd.location.href;
     }-*/;
 
@@ -237,7 +246,7 @@ public class Window {
      * @return the path to the URL.
      */
     public static String getPath() {
-    	return "/";
+    	return path;
     }
 
     /**
@@ -246,7 +255,7 @@ public class Window {
      * @return the URL's port
      */
     public static String getPort() {
-    	return "80";
+    	return port;
     }
 
     /**
@@ -255,7 +264,7 @@ public class Window {
      * @return the URL's protocol.
      */
     public static String getProtocol() {
-    	return "http";
+    	return protocol;
     }
 
     /**
@@ -264,7 +273,7 @@ public class Window {
      * @return the URL's query string
      */
     public static String getQueryString() {
-      return "";
+      return queryString;
     }
 
     /**
@@ -328,6 +337,14 @@ public class Window {
         cachedQueryString = currentQueryString;
       }
     }
+    
+    public static void setHash(String hash) {
+		Location.hash = hash;
+	}
+    
+    public static void setQueryString(String queryString) {
+		Location.queryString = queryString;
+	}
 
     private Location() {
     }

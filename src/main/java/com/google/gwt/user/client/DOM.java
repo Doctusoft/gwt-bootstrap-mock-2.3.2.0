@@ -736,7 +736,7 @@ public class DOM {
    *         not a child of the given parent
    */
   public static int getChildIndex(Element parent, Element child) {
-    return impl.getChildIndex(parent, child);
+	  return parent.getChildNodes().getList().indexOf(child);
   }
 
   /**
@@ -956,7 +956,7 @@ public class DOM {
 
     // If child isn't a PotentialElement, resolve() returns
     // the Element itself.
-    impl.insertChild(parent, PotentialElement.resolve(child).<Element> cast(), index);
+    parent.insertChild(child, index);
   }
 
   /**

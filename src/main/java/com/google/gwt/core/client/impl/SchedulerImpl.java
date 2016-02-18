@@ -15,10 +15,12 @@
  */
 package com.google.gwt.core.client.impl;
 
+import java.util.List;
+
+import com.google.common.collect.Lists;
 import com.google.gwt.core.client.Duration;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.Scheduler;
 
 /**
@@ -27,17 +29,22 @@ import com.google.gwt.core.client.Scheduler;
  */
 public class SchedulerImpl extends Scheduler {
   /**
-   * Metadata bag for command objects. It's a JSO so that a lightweight JsArray
+   * Metadata bag for command objects. It's a JSO so that a lightweight List
    * can be used instead of a Collections type.
    */
   static final class Task extends JavaScriptObject {
+	  ScheduledCommand cmd;
+	  boolean repeating;
     public static native Task create(RepeatingCommand cmd) /*-{
       return [cmd, true];
     }-*/;
 
-    public static native Task create(ScheduledCommand cmd) /*-{
-      return [cmd, false];
-    }-*/;
+    public static Task create(ScheduledCommand cmd) {
+    	Task task = new Task();
+    	task.cmd = cmd;
+    	task.repeating = false;
+		return task;
+    }
 
     protected Task() {
     }
@@ -60,9 +67,9 @@ public class SchedulerImpl extends Scheduler {
     /**
      * Has implicit cast.
      */
-    public native ScheduledCommand getScheduled() /*-{
-      return this[0];
-    }-*/;
+    public ScheduledCommand getScheduled() {
+    	return cmd;
+    }
 
     public native boolean isRepeating() /*-{
       return this[1];
@@ -127,8 +134,8 @@ public class SchedulerImpl extends Scheduler {
   /**
    * Extract boilerplate code.
    */
-  private static JsArray<Task> createQueue() {
-    return JavaScriptObject.createArray().cast();
+  private static List<Task> createQueue() {
+    return Lists.newArrayList();
   }
 
   /**
@@ -141,11 +148,11 @@ public class SchedulerImpl extends Scheduler {
   /**
    * Provides lazy-init pattern for the task queues.
    */
-  private static JsArray<Task> push(JsArray<Task> queue, Task task) {
+  private static List<Task> push(List<Task> queue, Task task) {
     if (queue == null) {
       queue = createQueue();
     }
-    queue.push(task);
+    queue.add(task);
     return queue;
   }
 
@@ -161,13 +168,13 @@ public class SchedulerImpl extends Scheduler {
    * @return <code>rescheduled</code> or a newly-allocated array if
    *         <code>rescheduled</code> is null.
    */
-  private static JsArray<Task> runScheduledTasks(JsArray<Task> tasks,
-      JsArray<Task> rescheduled) {
+  private static List<Task> runScheduledTasks(List<Task> tasks,
+      List<Task> rescheduled) {
     assert tasks != null : "tasks";
 
-    for (int i = 0, j = tasks.length(); i < j; i++) {
-      assert tasks.length() == j : "Working array length changed "
-          + tasks.length() + " != " + j;
+    for (int i = 0, j = tasks.size(); i < j; i++) {
+      assert tasks.size() == j : "Working array length changed "
+          + tasks.size() + " != " + j;
       Task t = tasks.get(i);
 
       try {
@@ -188,8 +195,10 @@ public class SchedulerImpl extends Scheduler {
     return rescheduled;
   }
 
-  private static native void scheduleFixedDelayImpl(RepeatingCommand cmd,
-      int delayMs) /*-{
+  private static void scheduleFixedDelayImpl(RepeatingCommand cmd,
+      int delayMs) {
+	  // TODO
+  }/*-{
     $wnd.setTimeout(function() {
       // $entry takes care of uncaught exception handling
       var ret = $entry(@com.google.gwt.core.client.impl.SchedulerImpl::execute(Lcom/google/gwt/core/client/Scheduler$RepeatingCommand;))(cmd);
@@ -238,10 +247,10 @@ public class SchedulerImpl extends Scheduler {
    * Processing the values in the queues is a one-shot, and then the array is
    * discarded.
    */
-  JsArray<Task> deferredCommands;
-  JsArray<Task> entryCommands;
-  JsArray<Task> finallyCommands;
-  JsArray<Task> incrementalCommands;
+  List<Task> deferredCommands;
+  List<Task> entryCommands;
+  List<Task> finallyCommands;
+  List<Task> incrementalCommands;
 
   /*
    * These two flags are used to control the state of the flusher and rescuer
@@ -255,10 +264,10 @@ public class SchedulerImpl extends Scheduler {
    */
   public void flushEntryCommands() {
     if (entryCommands != null) {
-      JsArray<Task> rescheduled = null;
+      List<Task> rescheduled = null;
       // This do-while loop handles commands scheduling commands
       do {
-        JsArray<Task> oldQueue = entryCommands;
+        List<Task> oldQueue = entryCommands;
         entryCommands = null;
         rescheduled = runScheduledTasks(oldQueue, rescheduled);
       } while (entryCommands != null);
@@ -271,10 +280,10 @@ public class SchedulerImpl extends Scheduler {
    */
   public void flushFinallyCommands() {
     if (finallyCommands != null) {
-      JsArray<Task> rescheduled = null;
+      List<Task> rescheduled = null;
       // This do-while loop handles commands scheduling commands
       do {
-        JsArray<Task> oldQueue = finallyCommands;
+        List<Task> oldQueue = finallyCommands;
         finallyCommands = null;
         rescheduled = runScheduledTasks(oldQueue, rescheduled);
       } while (finallyCommands != null);
@@ -337,7 +346,7 @@ public class SchedulerImpl extends Scheduler {
    */
   void flushPostEventPumpCommands() {
     if (deferredCommands != null) {
-      JsArray<Task> oldDeferred = deferredCommands;
+      List<Task> oldDeferred = deferredCommands;
       deferredCommands = null;
 
       /* We might not have any incremental commands queued. */
@@ -377,10 +386,10 @@ public class SchedulerImpl extends Scheduler {
    *
    * @return A replacement array that is possibly a shorter copy of <code>tasks</code>
    */
-  private JsArray<Task> runRepeatingTasks(JsArray<Task> tasks) {
+  private List<Task> runRepeatingTasks(List<Task> tasks) {
     assert tasks != null : "tasks";
 
-    int length = tasks.length();
+    int length = tasks.size();
     if (length == 0) {
       return null;
     }
@@ -391,7 +400,7 @@ public class SchedulerImpl extends Scheduler {
     while (duration.elapsedMillis() < TIME_SLICE) {
       boolean executedSomeTask = false;
       for (int i = 0; i < length; i++) {
-        assert tasks.length() == length : "Working array length changed " + tasks.length() + " != "
+        assert tasks.size() == length : "Working array length changed " + tasks.size() + " != "
             + length;
         Task t = tasks.get(i);
         if (t == null) {
@@ -413,17 +422,25 @@ public class SchedulerImpl extends Scheduler {
     }
 
     if (canceledSomeTasks) {
-      JsArray<Task> newTasks = createQueue();
+      List<Task> newTasks = createQueue();
       // Remove tombstones
       for (int i = 0; i < length; i++) {
         if (tasks.get(i) != null) {
-          newTasks.push(tasks.get(i));
+          newTasks.add(tasks.get(i));
         }
       }
-      assert newTasks.length() < length;
-      return newTasks.length() == 0 ? null : newTasks;
+      assert newTasks.size() < length;
+      return newTasks.size() == 0 ? null : newTasks;
     } else {
       return tasks;
     }
+  }
+  
+  public void executeDeferredCommands() {
+	  while (deferredCommands.size() > 0) {
+		  Task task = deferredCommands.get(0);
+		  deferredCommands.remove(0);
+		  task.getScheduled().execute();
+	  }
   }
 }

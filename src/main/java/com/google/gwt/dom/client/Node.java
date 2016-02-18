@@ -141,9 +141,11 @@ public class Node extends JavaScriptObject {
   /**
    * The first child of this node. If there is no such node, this returns null.
    */
-  public final native Node getFirstChild() /*-{
-    return this.firstChild;
-  }-*/;
+  public final Node getFirstChild() {
+	  if (childNodes.isEmpty())
+		  return null;
+	  return childNodes.get(0);
+  }
 
   /**
    * The last child of this node. If there is no such node, this returns null.
@@ -170,9 +172,14 @@ public class Node extends JavaScriptObject {
   /**
    * A code representing the type of the underlying object, as defined above.
    */
-  public final native short getNodeType() /*-{
-    return this.nodeType;
-  }-*/;
+  public final short getNodeType() {
+	 Class<? extends Node> cls = getClass();
+	if (Element.class.isAssignableFrom(cls))
+		  return 1;
+	  if (cls.equals(Text.class))
+		  return 3;
+	  throw new UnsupportedOperationException("" + cls);
+  }
 
   /**
    * The value of this node, depending on its type; see the table above. When it
@@ -235,6 +242,11 @@ public class Node extends JavaScriptObject {
     return getParentElement() != null;
   }
 
+  public final Node insertChild(Node newChild, int index) {
+	  newChild.setParentNode(this);
+	  childNodes.add(index, newChild);
+	  return newChild;
+  }
   /**
    * Inserts the node newChild after the existing child node refChild. If
    * refChild is <code>null</code>, insert newChild at the end of the list of children.
@@ -299,9 +311,11 @@ public class Node extends JavaScriptObject {
    * @param oldChild The node being removed
    * @return The node removed
    */
-  public final native Node removeChild(Node oldChild) /*-{
-    return this.removeChild(oldChild);
-  }-*/;
+  public final Node removeChild(Node oldChild) {
+	  childNodes.remove(oldChild);
+	  oldChild.setParentNode(null);
+	  return oldChild;
+  }
 
   /**
    * Removes this node from its parent node if it is attached to one.

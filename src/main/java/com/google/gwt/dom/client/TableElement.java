@@ -15,6 +15,10 @@
  */
 package com.google.gwt.dom.client;
 
+import java.util.ArrayList;
+
+import com.google.gwt.user.client.DOM;
+
 /**
  * The create* and delete* methods on the table allow authors to construct and
  * modify tables. [HTML 4.01] specifies that only one of each of the CAPTION,
@@ -38,7 +42,9 @@ public class TableElement extends Element {
     return (TableElement) elem;
   }
 
-  protected TableElement() {
+  private NodeList<TableSectionElement> tbodies = new NodeList<TableSectionElement>(new ArrayList<TableSectionElement>());
+
+  public TableElement() {
   }
 
   /**
@@ -55,18 +61,18 @@ public class TableElement extends Element {
    * 
    * @return A footer element (TFOOT)
    */
-  public final native TableSectionElement createTFoot() /*-{
-    return this.createTFoot();
-  }-*/;
+  public final TableSectionElement createTFoot() {
+	  return (TableSectionElement) DOM.createTFoot();
+  }
 
   /**
    * Create a table header row or return an existing one.
    * 
    * @return A new table header element (THEAD)
    */
-  public final native TableSectionElement createTHead() /*-{
-    return this.createTHead();
-  }-*/;
+  public final TableSectionElement createTHead() {
+	  return (TableSectionElement) DOM.createTHead();
+  }
 
   /**
    * Delete the table caption, if one exists.
@@ -165,9 +171,9 @@ public class TableElement extends Element {
   /**
    * Returns a collection of the table bodies (including implicit ones).
    */
-  public final native NodeList<TableSectionElement> getTBodies() /*-{
-    return this.tBodies;
-  }-*/;
+  public final NodeList<TableSectionElement> getTBodies() {
+	  return tbodies;
+  }
 
   /**
    * The table's TFOOT, or null if none exists.
@@ -241,7 +247,10 @@ public class TableElement extends Element {
    * 
    * @see <a href="http://www.w3.org/TR/1999/REC-html401-19991224/struct/tables.html#adef-cellspacing">W3C HTML Specification</a>
    */
-  public final native void setCellSpacing(int cellSpacing) /*-{
+  public final void setCellSpacing(int cellSpacing) {
+	  setAttribute("cellspacing", "" + cellSpacing);
+  }
+  /*-{
     this.cellSpacing = cellSpacing;
   }-*/;
 

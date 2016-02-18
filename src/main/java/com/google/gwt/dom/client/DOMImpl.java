@@ -316,9 +316,10 @@ public class DOMImpl {
     return doc.getViewportElement().getScrollTop();
   }
 
-  public native String getStyleProperty(Style style, String name) /*-{
-    return style[name];
-  }-*/;
+  public String getStyleProperty(Style style, String name) {
+	  // TODO
+	  return "";
+  }
 
   public int getTabIndex(Element elem) {
 	  return Integer.valueOf((String) MoreObjects.firstNonNull(elem.getAttribute("tabindex"), "0"));
@@ -344,9 +345,9 @@ public class DOMImpl {
     return img.src;
   }-*/;
 
-  public native void imgSetSrc(Element img, String src) /*-{
-    img.src = src;
-  }-*/;
+  public void imgSetSrc(Element img, String src) {
+	  img.setAttribute("src", src);
+  }
 
   public boolean isOrHasChild(Node parent, Node child) {
 	  return false;

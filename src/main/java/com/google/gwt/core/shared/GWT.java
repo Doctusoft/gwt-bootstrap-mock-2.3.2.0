@@ -20,6 +20,11 @@ import java.util.List;
 import com.google.common.collect.Lists;
 import com.google.gwt.i18n.client.impl.CldrImpl;
 import com.google.gwt.i18n.client.impl.LocaleInfoImpl;
+import com.google.gwt.i18n.client.impl.cldr.DateTimeFormatInfoImpl;
+import com.google.gwt.i18n.client.impl.cldr.DateTimeFormatInfoImpl_en;
+import com.google.gwt.user.cellview.client.CellBasedWidgetImpl;
+import com.google.gwt.user.cellview.client.CellBasedWidgetImplStandardBase;
+import com.google.web.bindery.event.shared.SimpleEventBus;
 
 /**
  * Supports core functionality that in some cases requires direct support from
@@ -86,6 +91,15 @@ public final class GWT {
 	  }
 	  if (CldrImpl.class.equals(classLiteral)) {
 		  return (T) new CldrImpl();
+	  }
+	  if (DateTimeFormatInfoImpl.class.equals(classLiteral)) {
+		  return (T) new DateTimeFormatInfoImpl_en();
+	  }
+	  if (CellBasedWidgetImpl.class.equals(classLiteral)) {
+		  return (T) new CellBasedWidgetImplStandardBase();
+	  }
+	  if (SimpleEventBus.class.equals(classLiteral)) {
+		  return (T) new SimpleEventBus();
 	  }
 	  return null;
   }

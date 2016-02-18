@@ -34,7 +34,7 @@ public class ImageElement extends Element {
     return (ImageElement) elem;
   }
 
-  protected ImageElement() {
+  public ImageElement() {
   }
 
   /**

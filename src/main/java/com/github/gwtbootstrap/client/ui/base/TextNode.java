@@ -1,15 +1,14 @@
 package com.github.gwtbootstrap.client.ui.base;
 
 import com.google.gwt.dom.client.Document;
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.Text;
+import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.logical.shared.AttachEvent;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.Widget;
 
 public class TextNode extends Widget implements HasText {
 
-    private Text baseNode;
+    private SpanElement baseNode;
     private boolean attached;
     
     public TextNode() {
@@ -23,15 +22,19 @@ public class TextNode extends Widget implements HasText {
     @Override
     public String getText() {
         
-        return baseNode != null ? baseNode.getData() : null;
+        return baseNode != null ? baseNode.getInnerText() : null;
     }
 
 
     @Override
     public void setText(String text) {
         assert baseNode == null : "TextNode can be set once";
-        baseNode = Document.get().createTextNode(text);
-        setElement(baseNode.<Element>cast());
+        // TODO this should be a Text node but that cannot be cast to element
+//        baseNode = Document.get().createTextNode(text);
+//        setElement(baseNode.<Element>cast());
+      baseNode = Document.get().createSpanElement();
+      baseNode.setInnerText(text);
+      setElement(baseNode);
     }
     
     @Override

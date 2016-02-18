@@ -34,7 +34,7 @@ public class TableRowElement extends Element {
     return (TableRowElement) elem;
   }
 
-  protected TableRowElement() {
+  public TableRowElement() {
   }
 
   /**
