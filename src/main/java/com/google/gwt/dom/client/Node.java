@@ -276,9 +276,12 @@ public class Node extends JavaScriptObject {
    *          node must be inserted), or <code>null</code> 
    * @return The node being inserted
    */
-  public final native Node insertBefore(Node newChild, Node refChild) /*-{
-    return this.insertBefore(newChild, refChild);
-  }-*/;
+  public final Node insertBefore(Node newChild, Node refChild) {
+	  Element parent = refChild.getParentElement();
+	  List<Node> siblingList = parent.getChildNodes().getList();
+	  int index = siblingList.indexOf(refChild);
+	  return parent.insertChild(newChild, index);
+  }
 
   /**
    * Inserts the given child as the first child of this node.

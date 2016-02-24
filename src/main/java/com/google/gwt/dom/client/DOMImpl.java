@@ -15,6 +15,8 @@
  */
 package com.google.gwt.dom.client;
 
+import java.util.List;
+
 import com.google.common.base.MoreObjects;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -78,7 +80,9 @@ public class DOMImpl {
       boolean canBubble, boolean cancelable, int detail, int screenX,
       int screenY, int clientX, int clientY, boolean ctrlKey, boolean altKey,
       boolean shiftKey, boolean metaKey, int button, Element relatedTarget) {
-	  return null;
+	  NativeEvent clickEvent = new NativeEvent();
+	  clickEvent.type = "click";
+	return clickEvent;
   }
 
   public ScriptElement createScriptElement(Document doc, String source) {
@@ -270,7 +274,15 @@ public class DOMImpl {
     return text;
   }-*/;
 
-  public native Element getNextSiblingElement(Element elem) /*-{
+  public Element getNextSiblingElement(Element elem) {
+	  Element parent = elem.getParentElement();
+	  List<Node> siblingList = parent.getChildNodes().getList();
+	  int index = siblingList.indexOf(elem);
+	  if (index == siblingList.size())
+		  return null;
+	  return (Element) siblingList.get(index + 1);
+  }
+  /*-{
     var sib = elem.nextSibling;
     while (sib && sib.nodeType != 1)
       sib = sib.nextSibling;

@@ -569,6 +569,7 @@ public class Image extends Widget implements SourcesLoadEvents, HasLoadHandlers,
 	  // we don't really need image clipping
 	  setElement(DOM.createImg());
 //    changeState(new ClippedState(this, url, left, top, width, height));
+      changeState(new UnclippedState(this));
     setStyleName("gwt-Image");
   }
 

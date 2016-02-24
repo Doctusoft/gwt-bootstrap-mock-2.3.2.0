@@ -101,6 +101,9 @@ public final class GWT {
 	  if (SimpleEventBus.class.equals(classLiteral)) {
 		  return (T) new SimpleEventBus();
 	  }
+	  if (com.google.gwt.user.cellview.client.AbstractCellTable.Impl.class.equals(classLiteral)) {
+		  return (T) new com.google.gwt.user.cellview.client.AbstractCellTable.Impl();
+	  }
 	  return null;
   }
 

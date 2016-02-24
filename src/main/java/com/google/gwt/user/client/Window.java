@@ -723,7 +723,10 @@ public class Window {
    * @param name the name of the window (e.g. "_blank")
    * @param features the features to be enabled/disabled on this window
    */
-  public static native void open(String url, String name, String features) /*-{
+  public static void open(String url, String name, String features) {
+	  mockableWindow.open(url, name, features);
+  }
+  /*-{
     $wnd.open(url, name, features);
   }-*/;
 
@@ -940,5 +943,13 @@ public class Window {
   }
 
   private Window() {
+  }
+  
+  public static MockableWindow mockableWindow = new MockableWindow(); 
+  
+  public static class MockableWindow {
+	  public void open(String url, String name, String features) {
+		  
+	  }
   }
 }

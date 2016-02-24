@@ -755,7 +755,11 @@ public class Element extends Node {
    * @param name the name of the property to be set
    * @param value the new property value
    */
-  public final native void setPropertyBoolean(String name, boolean value) /*-{
+  public final void setPropertyBoolean(String name, boolean value) {
+	  // TODO handle special stuff
+	  setAttribute(name, Boolean.toString(value));
+  }
+  /*-{
      this[name] = value;
    }-*/;
 

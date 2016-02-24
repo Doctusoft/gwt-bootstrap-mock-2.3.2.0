@@ -15,6 +15,13 @@
  */
 package com.google.gwt.user.cellview.client;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.cell.client.FieldUpdater;
@@ -52,13 +59,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionModel;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Abstract base class for tabular views that supports paging and columns.
@@ -447,7 +447,7 @@ public abstract class AbstractCellTable<T> extends AbstractHasData<T> {
   /**
    * Implementation of {@link AbstractCellTable}.
    */
-  private static class Impl {
+  public static class Impl {
 
     private final com.google.gwt.dom.client.Element tmpElem = Document.get().createDivElement()
         .cast();

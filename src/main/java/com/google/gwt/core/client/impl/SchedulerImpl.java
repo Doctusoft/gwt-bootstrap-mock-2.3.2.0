@@ -436,11 +436,16 @@ public class SchedulerImpl extends Scheduler {
     }
   }
   
-  public void executeDeferredCommands() {
-	  while (deferredCommands.size() > 0) {
-		  Task task = deferredCommands.get(0);
-		  deferredCommands.remove(0);
+  private void executeCommands(List<Task> commands) {
+	  while (commands.size() > 0) {
+		  Task task = commands.get(0);
+		  commands.remove(0);
 		  task.getScheduled().execute();
 	  }
+  }
+  
+  public void executeDeferredCommands() {
+	  executeCommands(deferredCommands);
+	  executeCommands(finallyCommands);
   }
 }

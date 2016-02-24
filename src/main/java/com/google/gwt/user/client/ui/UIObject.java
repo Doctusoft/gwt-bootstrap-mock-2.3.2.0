@@ -21,6 +21,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.debug.client.DebugInfo;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Node;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.user.client.DOM;
 
@@ -234,7 +235,10 @@ public abstract class UIObject implements HasVisibility {
    * accurately reflect whether the element is actually visible in the browser.
    * </p>
    */
-  public static native boolean isVisible(Element elem) /*-{
+  public static boolean isVisible(Element elem) {
+	  return !"none".equals(elem.getStyle().getDisplay()); 
+  }
+  /*-{
     return (elem.style.display != 'none');
   }-*/;
 
@@ -950,7 +954,14 @@ public abstract class UIObject implements HasVisibility {
     }
   }-*/;
 
-  private native void replaceNode(Element node, Element newNode) /*-{
+  private void replaceNode(Element node, Element newNode) {
+	  Node p = node.getParentNode();
+	  if (p == null)
+		  return;
+	  p.insertBefore(newNode, node);
+	  p.removeChild(node);
+  }
+  /*-{
     var p = node.parentNode;
     if (!p) {
       return;

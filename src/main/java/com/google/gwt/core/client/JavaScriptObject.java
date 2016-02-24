@@ -28,9 +28,9 @@ public class JavaScriptObject {
   /**
    * Returns a new array.
    */
-  public static native JavaScriptObject createArray() /*-{
-    return [];
-  }-*/;
+  public static JavaScriptObject createArray() {
+	  return new JsArrayBase<>();
+  }
 
   /**
    * Returns an empty function.
