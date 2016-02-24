@@ -435,10 +435,14 @@ public class Form extends ComplexWidget implements FormPanelImplHost {
 		// because setting an iframe's 'name' property dynamically doesn't work
 		// on
 		// most browsers.
+		/*
 		Element dummy = Document.get().createDivElement();
 		dummy.setInnerHTML("<iframe src=\"javascript:''\" name='" + frameName + "' style='position:absolute;width:0;height:0;border:0'>");
 
 		synthesizedFrame = dummy.getFirstChildElement();
+		*/
+		synthesizedFrame = Document.get().createIFrameElement();
+		synthesizedFrame.setAttribute("name", frameName);
 	}
 
 	/**

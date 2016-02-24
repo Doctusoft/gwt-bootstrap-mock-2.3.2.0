@@ -124,9 +124,9 @@ public final class Impl {
     return $moduleBase;
   }-*/;
 
-  public static native String getModuleName() /*-{
-    return $moduleName;
-  }-*/;
+  public static String getModuleName() {
+	  return "moduleName";
+  }
 
   /**
    * Returns the obfuscated name of members in the compiled output. This is a

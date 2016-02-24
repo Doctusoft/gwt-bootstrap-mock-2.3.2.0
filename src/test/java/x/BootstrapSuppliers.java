@@ -1,7 +1,9 @@
 package x;
 
+import com.github.gwtbootstrap.client.ui.base.PlaceholderHelper;
 import com.github.gwtbootstrap.client.ui.config.ColumnSizeConfigurator;
 import com.google.gwt.core.shared.GWT.CustomGWTCreateSupplier;
+import com.google.gwt.user.client.ui.impl.FormPanelImpl;
 
 public class BootstrapSuppliers implements CustomGWTCreateSupplier {
 
@@ -28,6 +30,16 @@ public class BootstrapSuppliers implements CustomGWTCreateSupplier {
 				public int getMaximumOffsetSize() {
 					return 10;
 				}
+			};
+		}
+		if (PlaceholderHelper.class.equals(classLiteral)) {
+			return new PlaceholderHelper() {
+				
+			};
+		}
+		if (FormPanelImpl.class.equals(classLiteral)) {
+			return new FormPanelImpl() {
+				
 			};
 		}
 		return null;

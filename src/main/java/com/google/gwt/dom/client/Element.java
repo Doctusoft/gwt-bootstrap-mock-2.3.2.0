@@ -18,7 +18,7 @@ package com.google.gwt.dom.client;
 import java.util.Map;
 
 import com.doctusoft.gwtmock.Document;
-import com.google.appengine.labs.repackaged.com.google.common.base.MoreObjects;
+import com.google.common.base.MoreObjects;
 import com.google.common.collect.Maps;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.event.dom.client.DomEvent.Type;
@@ -446,8 +446,12 @@ public class Element extends Node {
    * @return the property value
    */
   public final String getPropertyString(String name) {
+	  String attributeValue = attributes.get(name);
 	  // TODO implement getproperty for special properties
-	  return attributes.get(name);
+	  if ("value".equals(name)) {
+		  attributeValue = MoreObjects.firstNonNull(attributeValue, "");
+	  }
+	return attributeValue;
   }
 
   /**

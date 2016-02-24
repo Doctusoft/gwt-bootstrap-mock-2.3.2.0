@@ -12,6 +12,7 @@ import com.google.gwt.dom.client.BodyElement;
 import com.google.gwt.dom.client.ButtonElement;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.FormElement;
 import com.google.gwt.dom.client.FrameElement;
 import com.google.gwt.dom.client.IFrameElement;
 import com.google.gwt.dom.client.ImageElement;
@@ -98,9 +99,13 @@ public class Document extends com.google.gwt.dom.client.Document {
 		if (TableRowElement.TAG.equals(tag)) {
 			element = new TableRowElement();
 		}
-		if ("i".equalsIgnoreCase(tag) || "h3".equalsIgnoreCase(tag) || "small".equalsIgnoreCase(tag)) {
+		if ("i".equalsIgnoreCase(tag) || "h3".equalsIgnoreCase(tag) || "small".equalsIgnoreCase(tag)
+				|| "h5".equalsIgnoreCase(tag)) {
 			// TODO
 			element = new SpanElement();
+		}
+		if (FormElement.TAG.equals(tag)) {
+			element = new FormElement();
 		}
 		if (element == null) {
 			throw new UnsupportedOperationException("not yet supported " + tag);

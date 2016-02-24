@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -26,10 +27,13 @@ import com.altirnao.aodocs.feature.rpcbatch.shared.ResultOrException;
 import com.altirnao.aodocs.feature.rpcbatch.shared.auditrequest.AuditUserLoginRequest;
 import com.altirnao.aodocs.feature.rpcbatch.shared.authrequest.CheckBasicAccessRequest;
 import com.altirnao.aodocs.feature.rpcbatch.shared.libraryrequest.ListAvailableLibrariesRequest;
+import com.altirnao.aodocs.feature.rpcbatch.shared.messagerequest.DynamicMessageVOsWrapper;
+import com.altirnao.aodocs.feature.rpcbatch.shared.messagerequest.DynamicMessagesRequest;
 import com.altirnao.aodocs.feature.rpcbatch.shared.viewrequest.ListAllViewsRequest;
 import com.altirnao.aodocs.view.client.view.DocumentViewer;
 import com.doctusoft.gwtmock.Document;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Maps;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.impl.SchedulerImpl;
 import com.google.gwt.core.shared.GWT;
@@ -168,6 +172,9 @@ public class TestViewer {
 					if (request instanceof ListAvailableLibrariesRequest) {
 						Library library = new Library("asd", "asd");
 						resultValue = new AODocsResultList<>(ImmutableList.of(library));
+					}
+					if (request instanceof DynamicMessagesRequest) {
+						resultValue = DynamicMessageVOsWrapper.builder().dynamicMessageVOs((Map)Maps.newHashMap()).build();
 					}
 					ResultOrException resultOrException = new ResultOrException();
 					resultOrException.setResult(resultValue);
