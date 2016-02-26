@@ -15,17 +15,15 @@
  */
 package com.google.gwt.json.client;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+
+import com.google.common.collect.Sets;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsonUtils;
-
-import java.util.AbstractSet;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Represents a JSON object. A JSON object consists of a set of properties.
@@ -114,23 +112,25 @@ public class JSONObject extends JSONValue {
    * is immutable.
    */
   public Set<String> keySet() {
-    final String[] keys = computeKeys();
-    return new AbstractSet<String>() {
-      @Override
-      public boolean contains(Object o) {
-        return (o instanceof String) && containsKey((String) o);
-      }
-
-      @Override
-      public Iterator<String> iterator() {
-        return Arrays.asList(keys).iterator();
-      }
-
-      @Override
-      public int size() {
-        return keys.length;
-      }
-    };
+	  // TODO implement this actually
+	  return Sets.newHashSet();
+//    final String[] keys = computeKeys();
+//    return new AbstractSet<String>() {
+//      @Override
+//      public boolean contains(Object o) {
+//        return (o instanceof String) && containsKey((String) o);
+//      }
+//
+//      @Override
+//      public Iterator<String> iterator() {
+//        return Arrays.asList(keys).iterator();
+//      }
+//
+//      @Override
+//      public int size() {
+//        return keys.length;
+//      }
+//    };
   }
 
   /**

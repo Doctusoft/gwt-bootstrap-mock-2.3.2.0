@@ -15,6 +15,10 @@
  */
 package com.google.gwt.dom.client;
 
+import java.util.Map;
+
+import com.google.common.base.MoreObjects;
+import com.google.common.collect.Maps;
 import com.google.gwt.core.client.JavaScriptObject;
 
 /**
@@ -29,6 +33,8 @@ import com.google.gwt.core.client.JavaScriptObject;
  * @see Element#getStyle()
  */
 public class Style extends JavaScriptObject {
+	
+	private Map<String, String> properties = Maps.newHashMap(); 
 
   /**
    * Interface to be implemented by enumerated CSS values.
@@ -2162,13 +2168,13 @@ public class Style extends JavaScriptObject {
    * Gets the value of a named property.
    */
   private String getPropertyImpl(String name) {
-    return DOMImpl.impl.getStyleProperty(this, name);
+	  return MoreObjects.firstNonNull(properties.get(name), "");
   }
 
   /**
    * Sets the value of a named property.
    */
   private void setPropertyImpl(String name, String value) {
-	  // TODO
+	  properties.put(name, value);
   }
 }

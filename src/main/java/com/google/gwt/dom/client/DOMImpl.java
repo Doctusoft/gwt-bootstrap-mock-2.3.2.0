@@ -33,12 +33,18 @@ public class DOMImpl {
 	  return (ButtonElement) ((com.doctusoft.gwtmock.Document)doc).createMockElement(ButtonElement.TAG); 
   }
 
-  public native InputElement createCheckInputElement(Document doc) /*-{
+  public InputElement createCheckInputElement(Document doc) {
+	  InputElement ie = (InputElement) com.doctusoft.gwtmock.Document.Instance.createMockElement("input");
+	  ie.setAttribute("type", "checkbox");
+	  ie.setValue("on");
+	  return ie;
+  }
+  /*-{
     var e = doc.createElement("INPUT");
     e.type = 'checkbox';
     e.value = 'on';
     return e;
-  }-*/;
+  }-*/
 
   public Element createElement(Document doc, String tag) {
 	  return ((com.doctusoft.gwtmock.Document)doc).createMockElement(tag); 
@@ -235,13 +241,13 @@ public class DOMImpl {
     return MoreObjects.firstNonNull(elem.getAttribute(name), "");
   }
 
-  public native int getBodyOffsetLeft(Document doc) /*-{
-    return 0;
-  }-*/;
+  public int getBodyOffsetLeft(Document doc) {
+	  return 0;
+  }
 
-  public native int getBodyOffsetTop(Document doc) /*-{
-    return 0;
-  }-*/;
+  public int getBodyOffsetTop(Document doc) {
+	  return 0;
+  }
 
   public native JsArray<Touch> getChangedTouches(NativeEvent evt) /*-{
     return evt.changedTouches;
@@ -276,9 +282,11 @@ public class DOMImpl {
 
   public Element getNextSiblingElement(Element elem) {
 	  Element parent = elem.getParentElement();
+	  if (parent == null)
+		  return null;
 	  List<Node> siblingList = parent.getChildNodes().getList();
 	  int index = siblingList.indexOf(elem);
-	  if (index == siblingList.size())
+	  if (index == siblingList.size() - 1)
 		  return null;
 	  return (Element) siblingList.get(index + 1);
   }
@@ -349,7 +357,10 @@ public class DOMImpl {
     return evt.touches;
   }-*/;
 
-  public native boolean hasAttribute(Element elem, String name) /*-{
+  public boolean hasAttribute(Element elem, String name) {
+	  return elem.attributes.containsKey(name);
+  }
+  /*-{
     return elem.hasAttribute(name);
   }-*/;
 
@@ -401,8 +412,11 @@ public class DOMImpl {
     }
   }-*/;
 
-  public native void selectAdd(SelectElement select, OptionElement option,
-      OptionElement before) /*-{
+  public void selectAdd(SelectElement select, OptionElement option,
+      OptionElement before) {
+	  select.insertBefore(option, before);
+  }
+  /*-{
     select.add(option, before);
   }-*/;
 
@@ -410,11 +424,17 @@ public class DOMImpl {
     select.options.length = 0;
   }-*/;
 
-  public native int selectGetLength(SelectElement select) /*-{
+  public int selectGetLength(SelectElement select) {
+	  return selectGetOptions(select).getLength();
+  }
+  /*-{
     return select.options.length;
   }-*/;
 
-  public native NodeList<OptionElement> selectGetOptions(SelectElement select) /*-{
+  public NodeList<OptionElement> selectGetOptions(SelectElement select) {
+	  return (NodeList) select.getChildNodes();
+  }
+  /*-{
     return select.options;
   }-*/;
 
@@ -441,7 +461,10 @@ public class DOMImpl {
     doc.getViewportElement().setScrollLeft(left);
   }
 
-  public native void setScrollLeft(Element elem, int left) /*-{
+  public void setScrollLeft(Element elem, int left) {
+	  // nothing
+  }
+  /*-{
     elem.scrollLeft = left;
   }-*/;
 

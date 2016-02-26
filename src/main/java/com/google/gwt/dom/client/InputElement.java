@@ -157,7 +157,10 @@ public class InputElement extends Element {
    * 
    * @see <a href="http://www.w3.org/TR/1999/REC-html401-19991224/interact/forms.html#adef-value-INPUT">W3C HTML Specification</a>
    */
-  public final native String getValue() /*-{
+  public final String getValue() {
+	  return getAttribute("value");
+  }
+  /*-{
     return this.value;
   }-*/;
 
@@ -368,7 +371,10 @@ public class InputElement extends Element {
    * 
    * @see <a href="http://www.w3.org/TR/1999/REC-html401-19991224/interact/forms.html#adef-value-INPUT">W3C HTML Specification</a>
    */
-  public final native void setValue(String value) /*-{
+  public final void setValue(String value) {
+	  setAttribute("value", value);
+  }
+  /*-{
     this.value = value;
   }-*/;
 

@@ -823,7 +823,7 @@ public class DOM {
    * @return the child element
    */
   public static Element getFirstChild(Element elem) {
-    return elem.getFirstChildElement().cast();
+    return elem.getFirstChildElement();
   }
 
   /**

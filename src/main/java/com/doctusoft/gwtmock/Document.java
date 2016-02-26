@@ -18,7 +18,10 @@ import com.google.gwt.dom.client.IFrameElement;
 import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.dom.client.InputElement;
 import com.google.gwt.dom.client.LIElement;
+import com.google.gwt.dom.client.LabelElement;
 import com.google.gwt.dom.client.Node;
+import com.google.gwt.dom.client.OptionElement;
+import com.google.gwt.dom.client.SelectElement;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.dom.client.TableCellElement;
 import com.google.gwt.dom.client.TableColElement;
@@ -106,6 +109,15 @@ public class Document extends com.google.gwt.dom.client.Document {
 		}
 		if (FormElement.TAG.equals(tag)) {
 			element = new FormElement();
+		}
+		if (SelectElement.TAG.equals(tag)) {
+			element = new SelectElement();
+		}
+		if (OptionElement.TAG.equals(tag)) {
+			element = new OptionElement();
+		}
+		if (LabelElement.TAG.equals(tag)) {
+			element = new LabelElement();
 		}
 		if (element == null) {
 			throw new UnsupportedOperationException("not yet supported " + tag);

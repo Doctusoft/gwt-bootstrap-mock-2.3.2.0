@@ -62,7 +62,9 @@ public class TableElement extends Element {
    * @return A footer element (TFOOT)
    */
   public final TableSectionElement createTFoot() {
-	  return (TableSectionElement) DOM.createTFoot();
+	  TableSectionElement tfoot = (TableSectionElement) DOM.createTFoot();
+	  tfoot.setParentNode(this);
+	return tfoot;
   }
 
   /**
@@ -71,7 +73,9 @@ public class TableElement extends Element {
    * @return A new table header element (THEAD)
    */
   public final TableSectionElement createTHead() {
-	  return (TableSectionElement) DOM.createTHead();
+	  TableSectionElement thead = (TableSectionElement) DOM.createTHead();
+	  thead.setParentNode(this);
+	return thead;
   }
 
   /**

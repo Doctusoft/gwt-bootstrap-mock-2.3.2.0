@@ -420,12 +420,12 @@ public class Image extends Widget implements SourcesLoadEvents, HasLoadHandlers,
     @Override
     public void setUrlAndVisibleRect(Image image, SafeUri url, int left, int top, int width,
         int height) {
-      image.changeState(new ClippedState(image, url, left, top, width, height));
+      //image.changeState(new ClippedState(image, url, left, top, width, height));
     }
 
     @Override
     public void setVisibleRect(Image image, int left, int top, int width, int height) {
-      image.changeState(new ClippedState(image, getUrl(image), left, top, width, height));
+      //image.changeState(new ClippedState(image, getUrl(image), left, top, width, height));
     }
 
     // This method is used only by unit tests.

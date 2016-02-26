@@ -1,4 +1,4 @@
-package x;
+package x.mocks;
 
 import com.google.gwt.core.client.impl.SchedulerImpl;
 import com.google.gwt.core.shared.GWT.CustomGWTCreateSupplier;

@@ -48,6 +48,8 @@ public class Element extends Node {
 	
 	protected String tagName = null;
 	
+	protected Style style = new Style();
+	
   /**
    * Constant returned from {@link #getDraggable()}.
    */
@@ -508,8 +510,7 @@ public class Element extends Node {
    * Gets this element's {@link Style} object.
    */
   public final Style getStyle() {
-	  // TODO support styles
-	  return new Style();
+	  return style;
   }
 
   /**
@@ -573,7 +574,10 @@ public class Element extends Node {
   /**
    * Removes an attribute by name.
    */
-  public final native void removeAttribute(String name) /*-{
+  public final void removeAttribute(String name) {
+	  attributes.remove(name);
+  }
+  /*-{
      this.removeAttribute(name);
    }-*/;
 
@@ -823,7 +827,10 @@ public class Element extends Node {
   /**
    * The number of pixels that an element's content is scrolled to the top.
    */
-  public final native void setScrollTop(int scrollTop) /*-{
+  public final void setScrollTop(int scrollTop) {
+	  // nothing
+  }
+  /*-{
      this.scrollTop = scrollTop;
    }-*/;
 
@@ -832,7 +839,10 @@ public class Element extends Node {
    * 
    * @see <a href="http://www.w3.org/TR/1999/REC-html401-19991224/interact/forms.html#adef-tabindex">W3C HTML Specification</a>
    */
-  public final native void setTabIndex(int tabIndex) /*-{
+  public final void setTabIndex(int tabIndex) {
+	  setAttribute("tabindex", Integer.toString(tabIndex));
+  }
+  /*-{
     this.tabIndex = tabIndex;
   }-*/;
 

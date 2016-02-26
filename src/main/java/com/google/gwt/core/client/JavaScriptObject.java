@@ -43,7 +43,10 @@ public class JavaScriptObject {
   /**
    * Returns a new object.
    */
-  public static native JavaScriptObject createObject() /*-{
+  public static JavaScriptObject createObject() {
+	  return new JavaScriptObject();
+  }
+  /*-{
     return {};
   }-*/;
 

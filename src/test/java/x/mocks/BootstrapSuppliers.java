@@ -1,4 +1,4 @@
-package x;
+package x.mocks;
 
 import com.github.gwtbootstrap.client.ui.base.PlaceholderHelper;
 import com.github.gwtbootstrap.client.ui.config.ColumnSizeConfigurator;
@@ -23,12 +23,12 @@ public class BootstrapSuppliers implements CustomGWTCreateSupplier {
 				
 				@Override
 				public int getMaximumSpanSize() {
-					return 10;
+					return 12;
 				}
 				
 				@Override
 				public int getMaximumOffsetSize() {
-					return 10;
+					return 11;
 				}
 			};
 		}

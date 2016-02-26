@@ -1,4 +1,4 @@
-package x;
+package x.mocks;
 
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeUri;

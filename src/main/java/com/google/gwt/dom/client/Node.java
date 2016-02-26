@@ -18,6 +18,7 @@ package com.google.gwt.dom.client;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.gwt.core.client.JavaScriptObject;
 
 /**
@@ -105,7 +106,19 @@ public class Node extends JavaScriptObject {
    *          it is an {@link Element})
    * @return The duplicate node
    */
-  public final native Node cloneNode(boolean deep) /*-{
+  public final Node cloneNode(boolean deep) {
+	  Element thisElement = (Element) this;
+	  Element clone = com.doctusoft.gwtmock.Document.Instance.createElement(thisElement.getTagName());
+	  clone.attributes = Maps.newHashMap(thisElement.attributes);
+	  clone.innerText = thisElement.innerText;
+	  if (deep) {
+		  for (Node childNode : getChildNodes().getList()) {
+			  clone.appendChild(childNode.cloneNode(true));
+		  }
+	  }
+	  return clone;
+  }
+  /*-{
     return this.cloneNode(deep);
   }-*/;
 
@@ -158,7 +171,15 @@ public class Node extends JavaScriptObject {
    * The node immediately following this node. If there is no such node, this
    * returns null.
    */
-  public final native Node getNextSibling() /*-{
+  public final Node getNextSibling() {
+	  Node parentNode = getParentNode();
+	  List<Node> siblings = parentNode.getChildNodes().getList();
+	int index = siblings.indexOf(this);
+	  if (index == siblings.size() - 1)
+		  return null;
+	  return siblings.get(index + 1);
+  }
+  /*-{
     return this.nextSibling;
   }-*/;
 
@@ -277,10 +298,12 @@ public class Node extends JavaScriptObject {
    * @return The node being inserted
    */
   public final Node insertBefore(Node newChild, Node refChild) {
-	  Element parent = refChild.getParentElement();
-	  List<Node> siblingList = parent.getChildNodes().getList();
-	  int index = siblingList.indexOf(refChild);
-	  return parent.insertChild(newChild, index);
+	  int index = 0;
+	  if (refChild != null) {
+		  List<Node> siblingList = getChildNodes().getList();
+		  index = siblingList.indexOf(refChild);
+	  }
+	  return insertChild(newChild, index);
   }
 
   /**

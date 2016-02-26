@@ -18,12 +18,20 @@ package com.google.gwt.core.shared;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+import com.google.gwt.event.dom.client.TouchEvent.TouchSupportDetector;
+import com.google.gwt.i18n.client.CurrencyList;
+import com.google.gwt.i18n.client.constants.NumberConstantsImpl;
 import com.google.gwt.i18n.client.impl.CldrImpl;
 import com.google.gwt.i18n.client.impl.LocaleInfoImpl;
 import com.google.gwt.i18n.client.impl.cldr.DateTimeFormatInfoImpl;
 import com.google.gwt.i18n.client.impl.cldr.DateTimeFormatInfoImpl_en;
+import com.google.gwt.layout.client.LayoutImpl;
 import com.google.gwt.user.cellview.client.CellBasedWidgetImpl;
 import com.google.gwt.user.cellview.client.CellBasedWidgetImplStandardBase;
+import com.google.gwt.user.client.ui.ResizeLayoutPanel;
+import com.google.gwt.user.client.ui.ScrollImpl;
+import com.google.gwt.user.client.ui.TreeItem.TreeItemImpl;
+import com.google.gwt.user.client.ui.impl.PopupImpl;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 
 /**
@@ -104,7 +112,130 @@ public final class GWT {
 	  if (com.google.gwt.user.cellview.client.AbstractCellTable.Impl.class.equals(classLiteral)) {
 		  return (T) new com.google.gwt.user.cellview.client.AbstractCellTable.Impl();
 	  }
+	  if (CurrencyList.class.equals(classLiteral)) {
+		  return (T) new CurrencyList();
+	  }
+	  if (NumberConstantsImpl.class.equals(classLiteral)) {
+		  return (T) new NumberConstants();
+	  }
+	  if (PopupImpl.class.equals(classLiteral)) {
+		  return (T) new PopupImpl();
+	  }
+	  if (ResizeLayoutPanel.Impl.class.equals(classLiteral)) {
+		  return (T) new ResizeLayoutPanel.ImplStandard();
+	  }
+	  if (TouchSupportDetector.class.equals(classLiteral)) {
+		  return (T) new TouchSupportDetector();
+	  }
+	  if (ScrollImpl.class.equals(classLiteral)) {
+		  return (T) new ScrollImpl();
+	  }
+	  if (LayoutImpl.class.equals(classLiteral)) {
+		  return (T) new LayoutImpl();
+	  }
+	  if (TreeItemImpl.class.equals(classLiteral)) {
+		  return (T) new TreeItemImpl();
+	  }
 	  return null;
+  }
+  
+  static class NumberConstants implements NumberConstantsImpl {
+
+	@Override
+	public String notANumber() {
+		return "NaN";
+	}
+
+	@Override
+	public String currencyPattern() {
+		return "";
+	}
+
+	@Override
+	public String decimalPattern() {
+		return "";
+	}
+
+	@Override
+	public String decimalSeparator() {
+		return ".";
+	}
+
+	@Override
+	public String defCurrencyCode() {
+		return "EUR";
+	}
+
+	@Override
+	public String exponentialSymbol() {
+		return "E";
+	}
+
+	@Override
+	public String globalCurrencyPattern() {
+		return "";
+	}
+
+	@Override
+	public String groupingSeparator() {
+		return "_";
+	}
+
+	@Override
+	public String infinity() {
+		return "Inf";
+	}
+
+	@Override
+	public String minusSign() {
+		return "-";
+	}
+
+	@Override
+	public String monetaryGroupingSeparator() {
+		return "_";
+	}
+
+	@Override
+	public String monetarySeparator() {
+		return ",";
+	}
+
+	@Override
+	public String percent() {
+		return "%";
+	}
+
+	@Override
+	public String percentPattern() {
+		return "";
+	}
+
+	@Override
+	public String perMill() {
+		return "/";
+	}
+
+	@Override
+	public String plusSign() {
+		return "+";
+	}
+
+	@Override
+	public String scientificPattern() {
+		return "";
+	}
+
+	@Override
+	public String simpleCurrencyPattern() {
+		return "";
+	}
+
+	@Override
+	public String zeroDigit() {
+		return "0";
+	}
+	  
   }
 
   /**
