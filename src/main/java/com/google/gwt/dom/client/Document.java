@@ -15,9 +15,7 @@
  */
 package com.google.gwt.dom.client;
 
-import com.google.gwt.core.client.GWT;
-
-import edu.emory.mathcs.backport.java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * A Document is the root of the HTML hierarchy and holds the entire content.
@@ -30,7 +28,7 @@ public class Document extends Node {
    * We cache Document.nativeGet() in DevMode, because crossing the JSNI
    * boundary thousands of times just to read a constant value is slow. 
    */
-  private static Document doc;
+  //private static Document doc;
   
   /**
    * Gets the default document. This is the document in which the module is
@@ -39,15 +37,16 @@ public class Document extends Node {
    * @return the default document
    */
   public static Document get() {
-    if (GWT.isScript()) {
-      return nativeGet();
-    }
-    
-    // No need to be MT-safe. Single-threaded JS code.
-    if (doc == null) {
-      doc = nativeGet();
-    }
-    return doc;
+//    if (GWT.isScript()) {
+//      return nativeGet();
+//    }
+//    
+//    // No need to be MT-safe. Single-threaded JS code.
+//    if (doc == null) {
+//      doc = nativeGet();
+//    }
+//    return doc;
+	  return com.doctusoft.gwtmock.Document.Instance;
   }
 
   private static Document nativeGet() {

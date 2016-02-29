@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.google.appengine.repackaged.com.google.api.client.util.Maps;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;

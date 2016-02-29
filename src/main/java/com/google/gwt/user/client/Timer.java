@@ -17,12 +17,11 @@ package com.google.gwt.user.client;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.google.common.collect.Maps;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
-
-import edu.emory.mathcs.backport.java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * A simplified, browser-safe timer class. This class serves the same purpose as
