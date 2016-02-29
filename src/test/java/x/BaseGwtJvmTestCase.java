@@ -8,7 +8,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 
 import com.altirnao.aodocs.common.client.ContextData;
+import com.altirnao.aodocs.common.client.EventBusHolder;
 import com.altirnao.aodocs.common.shared.promise.Promise;
+import com.altirnao.aodocs.feature.rpcbatch.client.RequestHelper;
 import com.doctusoft.gwtmock.Document;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.core.shared.GWT.CustomGWTCreateSupplier;
@@ -20,11 +22,14 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.web.bindery.event.shared.EventBus;
+import com.google.web.bindery.event.shared.SimpleEventBus;
 import com.google.web.bindery.event.shared.binder.EventBinder;
 
 import x.mocks.BatchRequestServletMock;
 import x.mocks.BootstrapSuppliers;
 import x.mocks.DummyImageResource;
+import x.mocks.EventBinderMock;
 import x.mocks.MockMessages;
 import x.mocks.RemoteServiceProxy;
 import x.mocks.SchedulerSupplier;
@@ -52,28 +57,11 @@ public class BaseGwtJvmTestCase {
 	
 	@BeforeClass
 	public static void setupClass() throws Exception {
-		Document.Instance.getBody().setId("content");
 		GWT.addCustomSupplier(new CustomGWTCreateSupplier() {
 			@Override
 			public Object create(Class<?> classLiteral) {
 				if (EventBinder.class.isAssignableFrom(classLiteral)) {
-					return Proxy.newProxyInstance(classLiteral.getClassLoader(), new Class [] { classLiteral }, new InvocationHandler() {
-						@Override
-						public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-							if (method.getName().equals("bindEventHandlers")) {
-								return new com.google.gwt.event.shared.HandlerRegistration() {
-									@Override
-									public void removeHandler() {
-										// no-op
-									}
-								};
-							}
-							if (method.getDeclaringClass().equals(Object.class)) {
-								return method.invoke(proxy, args);
-							}
-							throw new UnsupportedOperationException();
-						}
-					});
+					return new EventBinderMock(classLiteral).getProxy();
 				}
 				return null;
 			}
@@ -144,6 +132,10 @@ public class BaseGwtJvmTestCase {
 	@Before
 	public void setup() {
 		ContextData.AodocsDomain = new Promise<>();
+		Document.Instance = new Document();
+		Document.Instance.getBody().setId("content");
+		EventBusHolder.setEventBusForTesting((EventBus) GWT.create(SimpleEventBus.class));
+		RequestHelper.recreateLogic();
 	}
 
 }

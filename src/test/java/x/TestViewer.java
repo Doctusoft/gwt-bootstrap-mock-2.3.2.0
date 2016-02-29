@@ -1,20 +1,21 @@
 package x;
 
-import java.io.PrintWriter;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import com.altirnao.aodocs.common.shared.HistoryUtils;
+import com.altirnao.aodocs.feature.rpcbatch.client.RequestHelper;
+import com.altirnao.aodocs.feature.rpcbatch.shared.documentrequest.ListDocumentsByViewRequest;
+import com.altirnao.aodocs.view.client.view.DocumentListView;
 import com.altirnao.aodocs.view.client.view.DocumentViewer;
 import com.altirnao.aodocs.view.client.view.SingleDocumentView;
-import com.doctusoft.gwtmock.Document;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.impl.SchedulerImpl;
 import com.google.gwt.user.client.Window;
 
 import x.data.DataContextBuilder;
+import x.mocks.BatchRequestServletMock.LoadRequestMonitor;
 
 public class TestViewer extends BaseGwtJvmTestCase {
 	
@@ -66,13 +67,18 @@ public class TestViewer extends BaseGwtJvmTestCase {
 	}
 	
 	@Test
-	public void testShowDocListView() {
+	public void testDocListViewSearchSendsTheRPCRequest() throws Exception {
 		DataContextBuilder builder = new DataContextBuilder().basicLibrary().basicClass().basicUser().basicView().apply(batchRequestServletMock);
 		Window.Location.setHash("Menu_listDoc/LibraryId_libraryId/ViewId_viewId");
 		DocumentViewer documentViewer = new DocumentViewer();
 		documentViewer.onModuleLoad();
 		((SchedulerImpl)Scheduler.get()).executeDeferredCommands();
-		Document.Instance.printFormatted(new PrintWriter(System.out));
-		
+		DocumentListView docListView = (DocumentListView) documentViewer.getPageMap().get(HistoryUtils.MENU_ITEM_HISTORY_PREFIX + HistoryUtils.DOCUMENT_LIST_PAGE);
+		RequestHelper.invalidate(ListDocumentsByViewRequest.class);
+		docListView.getSearchPanel().getSearchTextBox().setValue("x");
+		docListView.getSearchPanel().getSearchButton().click();
+		((SchedulerImpl)Scheduler.get()).executeDeferredCommands();
+		LoadRequestMonitor monitor = batchRequestServletMock.getLoadRequestMonitor();
+		Mockito.inOrder(monitor).verify(monitor, Mockito.times(2)).loadRequestExecuted(Mockito.isA(ListDocumentsByViewRequest.class));
 	}
 }

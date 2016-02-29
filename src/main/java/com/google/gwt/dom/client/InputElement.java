@@ -39,6 +39,8 @@ public class InputElement extends Element {
     return (InputElement) elem;
   }
 
+private boolean checked;
+
   public InputElement() {
   }
 
@@ -179,9 +181,9 @@ public class InputElement extends Element {
    * the value of this property during the handling of click events is
    * implementation dependent.
    */
-  public final native boolean isChecked() /*-{
-    return !!this.checked;
-  }-*/;
+  public final boolean isChecked() {
+	  return checked;
+  }
 
   /**
    * When type has the value "radio" or "checkbox", this represents the HTML
@@ -266,9 +268,9 @@ public class InputElement extends Element {
    * the value of this property during the handling of click events is
    * implementation dependent.
    */
-  public final native void setChecked(boolean checked) /*-{
-    this.checked = checked;
-  }-*/;
+  public final void setChecked(boolean checked) {
+	  this.checked = checked;
+  }
 
   /**
    * When type has the value "radio" or "checkbox", this represents the HTML

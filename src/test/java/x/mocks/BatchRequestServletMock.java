@@ -16,9 +16,14 @@ import com.altirnao.aodocs.feature.rpcbatch.shared.ResultOrException;
 import com.google.common.base.Supplier;
 import com.google.common.collect.Maps;
 
+import lombok.Getter;
+
 public class BatchRequestServletMock {
 	
 	protected Map<Class<?>, Supplier<Object>> responseSuppliers = Maps.newHashMap();
+	
+	@Getter
+	protected LoadRequestMonitor loadRequestMonitor = Mockito.spy(LoadRequestMonitor.class); 
 	
 	public BatchRequestServletMock() {
 		BatchedRemoteService batchedService = RemoteServiceProxy.getOrCreateRemoteServiceProxy(BatchedRemoteService.class).getSpy();
@@ -30,6 +35,7 @@ public class BatchRequestServletMock {
 					ArrayList<ResultOrException> result = new ArrayList<>();
 					for (LoadRequest request : batchRequest.getRequests()) {
 						System.out.println(request);
+						loadRequestMonitor.loadRequestExecuted(request);
 						Supplier<?> supplier = responseSuppliers.get(request.getClass());
 						if (supplier == null)
 							throw new RuntimeException("No supplier for: " + request);
@@ -48,5 +54,9 @@ public class BatchRequestServletMock {
 
 	public <T extends LoadResult> void registerSupplier(Class<? extends LoadRequest<T>> requestClass, Supplier<T> supplier) {
 		responseSuppliers.put((Class) requestClass, (Supplier) supplier);
+	}
+	
+	public interface LoadRequestMonitor {
+		public void loadRequestExecuted(LoadRequest loadRequest);
 	}
 }

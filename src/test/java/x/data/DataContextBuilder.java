@@ -3,6 +3,7 @@ package x.data;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import org.mockito.Mockito;
@@ -42,6 +43,7 @@ import com.altirnao.aodocs.feature.rpcbatch.shared.messagerequest.DynamicMessage
 import com.altirnao.aodocs.feature.rpcbatch.shared.viewrequest.ListAllViewsRequest;
 import com.altirnao.aodocs.feature.rpcbatch.shared.viewrequest.ListViewWithOpenDriveRequest;
 import com.altirnao.aodocs.feature.rpcbatch.shared.viewrequest.LoadDocumentViewDataRequest;
+import com.altirnao.aodocs.feature.search.shared.SearchProblem;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
@@ -71,6 +73,7 @@ public class DataContextBuilder {
 	public DataContextBuilder basicLibrary() {
 		library = new Library("libraryId", "Test Library");
 		library.setCurrentUserPermissionLevel(PermissionLevel.ADMINISTRATOR);
+		library.setRootFolderId("0");
 		return this;
 	}
 	
@@ -96,6 +99,7 @@ public class DataContextBuilder {
 		documentVO.setLibrary("libraryId");
 		documentVO.setCheckInCheckOutMode(CheckInCheckOutMode.NONE);
 		documentVO.setCanWrite(true);
+		documentVO.setWriteAccessDisregardingTheCheckOutState(true);
 		documentVO.setShowClassName(true);
 		documentVO.setClassDisplayName("Test Class");
 		return this;
@@ -174,7 +178,9 @@ public class DataContextBuilder {
 			batchMock.registerSupplier(ListViewWithOpenDriveRequest.class, new Supplier<ViewListWithFolderVisibilityVO>() {
 				@Override
 				public ViewListWithFolderVisibilityVO get() {
-					return new ViewListWithFolderVisibilityVO();
+					ViewListWithFolderVisibilityVO viewList = new ViewListWithFolderVisibilityVO();
+					viewList.setViewList(new ArrayList<View>());
+					return viewList;
 				}
 			});
 			batchMock.registerSupplier(LoadDocumentViewDataRequest.class, new Supplier<DocumentViewVO>() {
@@ -186,7 +192,8 @@ public class DataContextBuilder {
 			batchMock.registerSupplier(ListDocumentsByViewRequest.class, new Supplier<SimplePagingLoadResult<FolderAndDocumentListVO>>() {
 				@Override
 				public SimplePagingLoadResult<FolderAndDocumentListVO> get() {
-					SimplePagingLoadResult<FolderAndDocumentListVO> result = new DocumentPagingLoadResultImpl();
+					SimplePagingLoadResult<FolderAndDocumentListVO> result =
+						new DocumentPagingLoadResultImpl(new ArrayList<FolderAndDocumentListVO>(), 0, 0, true, null, new HashSet<SearchProblem>());
 					return result;
 				}
 			});

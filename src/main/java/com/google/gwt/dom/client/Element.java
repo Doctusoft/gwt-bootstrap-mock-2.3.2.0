@@ -15,10 +15,12 @@
  */
 package com.google.gwt.dom.client;
 
+import java.util.List;
 import java.util.Map;
 
 import com.doctusoft.gwtmock.Document;
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.event.dom.client.DomEvent.Type;
@@ -277,9 +279,21 @@ public class Element extends Node {
    *          all tags
    * @return A list of matching Element nodes
    */
-  public final native NodeList<Element> getElementsByTagName(String name) /*-{
-     return this.getElementsByTagName(name);
-   }-*/;
+  public final NodeList<Element> getElementsByTagName(String name) {
+	  List<Element> result = Lists.newArrayList();
+	  for (Node node : getChildNodes()) {
+		  if (node instanceof Element) {
+			  Element child = (Element) node;
+			  if (name.equals(child.getTagName())) {
+				  result.add(child);
+			  }
+			  if (!child.getChildNodes().getList().isEmpty()) {
+				  result.addAll(child.getElementsByTagName(name).getList());
+			  }
+		  }
+	  }
+	  return new NodeList<Element>(result);
+  }
 
   /**
    * The first child of element this element. If there is no such element, this

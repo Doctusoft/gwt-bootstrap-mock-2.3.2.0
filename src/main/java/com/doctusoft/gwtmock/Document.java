@@ -32,7 +32,7 @@ import com.google.gwt.dom.client.UListElement;
 
 public class Document extends com.google.gwt.dom.client.Document {
 	
-	public static final Document Instance = new Document();
+	public static Document Instance = new Document();
 	
 	protected Set<Element> elements = Sets.newHashSet();
 	
