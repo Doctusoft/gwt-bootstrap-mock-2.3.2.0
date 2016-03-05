@@ -21,6 +21,7 @@ import com.google.gwt.dom.client.LIElement;
 import com.google.gwt.dom.client.LabelElement;
 import com.google.gwt.dom.client.Node;
 import com.google.gwt.dom.client.OptionElement;
+import com.google.gwt.dom.client.ParagraphElement;
 import com.google.gwt.dom.client.SelectElement;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.dom.client.TableCellElement;
@@ -28,6 +29,7 @@ import com.google.gwt.dom.client.TableColElement;
 import com.google.gwt.dom.client.TableElement;
 import com.google.gwt.dom.client.TableRowElement;
 import com.google.gwt.dom.client.TableSectionElement;
+import com.google.gwt.dom.client.TextAreaElement;
 import com.google.gwt.dom.client.UListElement;
 
 public class Document extends com.google.gwt.dom.client.Document {
@@ -119,6 +121,12 @@ public class Document extends com.google.gwt.dom.client.Document {
 		if (LabelElement.TAG.equals(tag)) {
 			element = new LabelElement();
 		}
+		if (ParagraphElement.TAG.equals(tag)) {
+			element = new ParagraphElement();
+		}
+		if (TextAreaElement.TAG.equals(tag)) {
+			element = new TextAreaElement();
+		}
 		if (element == null) {
 			throw new UnsupportedOperationException("not yet supported " + tag);
 		}
@@ -130,7 +138,7 @@ public class Document extends com.google.gwt.dom.client.Document {
 	@Override
 	public Element getElementById(String elementId) {
 		Preconditions.checkNotNull(elementId);
-		for (Element element: elements) {
+		for (Element element : elements) {
 			if (elementId.equals(element.getId())) {
 				return element;
 			}
