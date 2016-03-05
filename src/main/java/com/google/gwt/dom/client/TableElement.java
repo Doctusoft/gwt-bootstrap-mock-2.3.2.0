@@ -15,9 +15,9 @@
  */
 package com.google.gwt.dom.client;
 
-import java.util.ArrayList;
+import java.util.List;
 
-import com.doctusoft.gwtmock.Document;
+import com.google.common.collect.Lists;
 import com.google.gwt.user.client.DOM;
 
 /**
@@ -41,14 +41,6 @@ public class TableElement extends Element {
 	public static TableElement as(Element elem) {
 		assert elem.getTagName().equalsIgnoreCase(TAG);
 		return (TableElement) elem;
-	}
-	
-	private NodeList<TableSectionElement> tbodies = new NodeList<TableSectionElement>(new ArrayList<TableSectionElement>());
-	
-	public TableElement() {
-		TableSectionElement tbody = Document.Instance.createTBodyElement();
-		tbody.setParentNode(this);
-		tbodies.getList().add(tbody);
 	}
 	
 	/**
@@ -181,7 +173,16 @@ public class TableElement extends Element {
 	 * Returns a collection of the table bodies (including implicit ones).
 	 */
 	public final NodeList<TableSectionElement> getTBodies() {
-		return tbodies;
+		List<TableSectionElement> result = Lists.newArrayList();
+		for (Node node : getChildNodes().getList()) {
+			if (node instanceof TableSectionElement) {
+				TableSectionElement section = (TableSectionElement) node;
+				if (section.getTagName().equals("tbody")) {
+					result.add(section);
+				}
+			}
+		}
+		return new NodeList<>(result);
 	}
 	
 	/**

@@ -564,7 +564,7 @@ public abstract class AbstractCellTable<T> extends AbstractHasData<T> {
       // Remove all children in the range.
       final int absEndIndex = table.getPageStart() + startIndex + childCount;
 
-      TableRowElement insertBefore = table.getChildElement(startIndex).cast();
+      TableRowElement insertBefore = table.getChildElement(startIndex);
       if (table.legacyRenderRowValues) {
         int count = 0;
         while (insertBefore != null && count < childCount) {

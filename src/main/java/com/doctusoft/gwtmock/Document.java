@@ -6,14 +6,17 @@ import java.util.Set;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
 import com.google.gwt.dom.client.AnchorElement;
+import com.google.gwt.dom.client.BRElement;
 import com.google.gwt.dom.client.BodyElement;
 import com.google.gwt.dom.client.ButtonElement;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.FormElement;
 import com.google.gwt.dom.client.FrameElement;
+import com.google.gwt.dom.client.HRElement;
 import com.google.gwt.dom.client.IFrameElement;
 import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.dom.client.InputElement;
@@ -29,6 +32,7 @@ import com.google.gwt.dom.client.TableColElement;
 import com.google.gwt.dom.client.TableElement;
 import com.google.gwt.dom.client.TableRowElement;
 import com.google.gwt.dom.client.TableSectionElement;
+import com.google.gwt.dom.client.Text;
 import com.google.gwt.dom.client.TextAreaElement;
 import com.google.gwt.dom.client.UListElement;
 
@@ -41,6 +45,8 @@ public class Document extends com.google.gwt.dom.client.Document {
 	public Element documentElement = new Element();
 	
 	protected BodyElement body;
+	
+	private final ImmutableList<String> DummyTagNames = ImmutableList.of("i", "b", "h3", "small", "h5", "svg", "circle");
 	
 	public Element createMockElement(String tag) {
 		Element element = null;
@@ -104,9 +110,7 @@ public class Document extends com.google.gwt.dom.client.Document {
 		if (TableRowElement.TAG.equals(tag)) {
 			element = new TableRowElement();
 		}
-		if ("i".equalsIgnoreCase(tag) || "h3".equalsIgnoreCase(tag) || "small".equalsIgnoreCase(tag)
-				|| "h5".equalsIgnoreCase(tag)) {
-			// TODO
+		if (DummyTagNames.contains(tag)) {
 			element = new SpanElement();
 		}
 		if (FormElement.TAG.equals(tag)) {
@@ -126,6 +130,12 @@ public class Document extends com.google.gwt.dom.client.Document {
 		}
 		if (TextAreaElement.TAG.equals(tag)) {
 			element = new TextAreaElement();
+		}
+		if (HRElement.TAG.equals(tag)) {
+			element = new HRElement();
+		}
+		if (BRElement.TAG.equals(tag)) {
+			element = new BRElement();
 		}
 		if (element == null) {
 			throw new UnsupportedOperationException("not yet supported " + tag);
@@ -160,6 +170,14 @@ public class Document extends com.google.gwt.dom.client.Document {
 		pw.flush();
 	}
 	
+	public void printFormatted(Node node, String indent, PrintWriter pw) {
+		if (node instanceof Element) {
+			printFormatted((Element) node, indent, pw);
+		}
+		if (node instanceof Text) {
+			pw.print(((Text)node).getData());
+		}
+	}
 	public void printFormatted(Element element, String indent, PrintWriter pw) {
 		String tagName = element.getTagName();
 		pw.print(indent + "<" + tagName);
@@ -171,9 +189,7 @@ public class Document extends com.google.gwt.dom.client.Document {
 			pw.println(indent + element.getInnerText());
 		}
 		for (Node node : element.getChildNodes()) {
-			if (node instanceof Element) {
-				printFormatted((Element) node, indent + "  ", pw);
-			}
+			printFormatted(node, indent + "  ", pw);
 		}
 		pw.println(indent + "</" + tagName + ">");
 	}

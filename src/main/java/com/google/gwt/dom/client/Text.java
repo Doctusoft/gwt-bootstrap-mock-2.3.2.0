@@ -44,9 +44,9 @@ public class Text extends Node {
   /**
    * The character data of this text node.
    */
-  public final native String getData() /*-{
-    return this.data;
-  }-*/;
+  public final String getData() {
+	  return this.data;
+  }
 
   /**
    * The number of characters available through the data property.

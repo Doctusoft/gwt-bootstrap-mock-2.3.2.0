@@ -15,6 +15,8 @@
  */
 package com.google.gwt.dom.client;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +29,10 @@ import com.google.gwt.event.dom.client.DomEvent.Type;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
+
+import net.htmlparser.jericho.Attribute;
+import net.htmlparser.jericho.Segment;
+import net.htmlparser.jericho.Source;
 
 /**
  * All HTML element interfaces derive from this class.
@@ -66,6 +72,8 @@ public class Element extends Node {
 	 * Constant returned from {@link #getDraggable()}.
 	 */
 	public static final String DRAGGABLE_TRUE = "true";
+
+	private String innerHtml;
 	
 	/**
 	 * Assert that the given {@link Node} is an {@link Element} and automatically
@@ -327,8 +335,12 @@ public class Element extends Node {
 	 * All of the markup and content within a given element.
 	 */
 	public final String getInnerHTML() {
-		// TODO not yet
-		throw new UnsupportedOperationException();
+		StringWriter sw = new StringWriter();
+		PrintWriter pw = new PrintWriter(sw);
+		for (Node node : getChildNodes().getList()) {
+			Document.Instance.printFormatted(node, "", pw);
+		}
+		return sw.getBuffer().toString();
 	}
 	
 	/**
@@ -758,12 +770,67 @@ public class Element extends Node {
 		setAttribute("id", id);
 	}
 	
+	protected List<Element> getChildNodesWithTagName(String tagName) {
+		List<Element> result = Lists.newArrayList();
+		for (Node node : getChildNodes().getList()) {
+			if (node instanceof Element && ((Element) node).getTagName().equals(tagName)) {
+				result.add((Element) node);
+			}
+		}
+		return result;
+	}
+	
+	protected List<Element> getChildElements() {
+		List<Element> result = Lists.newArrayList();
+		for (Node node : getChildNodes().getList()) {
+			if (node instanceof Element) {
+				result.add((Element) node);
+			}
+		}
+		return result;
+	}
+	
+	private static void addParsedElements(Element target, Segment container, List<net.htmlparser.jericho.Element> elements) {
+		int index = container.getBegin();
+		final int begin = index;
+		for (net.htmlparser.jericho.Element element : elements) {
+			int elementStart = element.getBegin();
+			if (elementStart > index) {
+				//insert text node
+				Text text = new Text();
+				text.setData(container.subSequence(index - begin, elementStart - begin).toString());
+				target.appendChild(text);
+			}
+			Element mockElement = Document.Instance.createMockElement(element.getName());
+			target.appendChild(mockElement);
+			for (Attribute attribute : element.getAttributes()) {
+				mockElement.setAttribute(attribute.getName(), attribute.getValue());
+			}
+			addParsedElements(mockElement, element, element.getChildElements());
+			index = element.getEnd();
+		}
+		if (container.getEnd() > index) {
+			Text text = new Text();
+			text.setData(container.subSequence(index - begin, container.getEnd() - begin).toString());
+			target.appendChild(text);
+		}
+	}
+	
+	private void removeAllChildren() {
+		for (Node node : getChildNodes().getList()) {
+			node.setParentNode(null);
+		}
+		getChildNodes().getList().clear();
+	}
+	
 	/**
 	 * All of the markup and content within a given element.
 	 */
 	public final void setInnerHTML(String html) {
-		// TODO setInnerHTML
-		setInnerText(html);
+		this.innerHtml = html;
+		removeAllChildren();
+		Source source = new Source(html);
+		addParsedElements(this, source, source.getChildElements());
 	}
 	
 	/**

@@ -15,6 +15,9 @@
  */
 package com.google.gwt.core.shared;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -26,6 +29,10 @@ import com.google.gwt.i18n.client.impl.LocaleInfoImpl;
 import com.google.gwt.i18n.client.impl.cldr.DateTimeFormatInfoImpl;
 import com.google.gwt.i18n.client.impl.cldr.DateTimeFormatInfoImpl_en;
 import com.google.gwt.layout.client.LayoutImpl;
+import com.google.gwt.safehtml.client.SafeHtmlTemplates;
+import com.google.gwt.safehtml.client.SafeHtmlTemplates.Template;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.cellview.client.CellBasedWidgetImpl;
 import com.google.gwt.user.cellview.client.CellBasedWidgetImplStandardBase;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
@@ -136,7 +143,32 @@ public final class GWT {
 	  if (TreeItemImpl.class.equals(classLiteral)) {
 		  return (T) new TreeItemImpl();
 	  }
+	  if (SafeHtmlTemplates.class.isAssignableFrom(classLiteral)) {
+		  return (T) createSafeHtmlTemplates(classLiteral);
+	  }
 	  return null;
+  }
+  
+  private static SafeHtmlTemplates createSafeHtmlTemplates(final Class<?> classLiteral) {
+	  return (SafeHtmlTemplates) Proxy.newProxyInstance(classLiteral.getClassLoader(), new Class<?> [] { classLiteral }, new InvocationHandler() {
+			@Override
+			public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+				if (method.getDeclaringClass().equals(classLiteral)) {
+					String templateString = method.getAnnotation(Template.class).value();
+					for (int i = 0; i < args.length; i ++) {
+						String content = null;
+						if (args[i] instanceof String) {
+							content = SafeHtmlUtils.htmlEscape((String) args[i]);
+						} else if (args[i] instanceof SafeHtml) {
+							content = ((SafeHtml) args[i]).asString();
+						}
+						templateString = templateString.replaceAll("\\{0\\}", content);
+					}
+					return SafeHtmlUtils.fromTrustedString(templateString);
+				}
+				return method.invoke(this, args);
+			}
+		});
   }
   
   static class NumberConstants implements NumberConstantsImpl {

@@ -285,11 +285,11 @@ public class DOMImpl {
 		Element parent = elem.getParentElement();
 		if (parent == null)
 			return null;
-		List<Node> siblingList = parent.getChildNodes().getList();
+		List<Element> siblingList = parent.getChildElements();
 		int index = siblingList.indexOf(elem);
 		if (index == siblingList.size() - 1)
 			return null;
-		return (Element) siblingList.get(index + 1);
+		return siblingList.get(index + 1);
 	}
 	/*-{
 	 var sib = elem.nextSibling;
