@@ -1314,7 +1314,8 @@ public class DOM {
    * Initialize the event system if it has not already been initialized.
    */
   static void maybeInitializeEventSystem() {
-    impl.maybeInitializeEventSystem();
+	  // TODO
+    //impl.maybeInitializeEventSystem();
   }
 
   /**
