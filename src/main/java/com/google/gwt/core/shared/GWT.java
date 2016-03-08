@@ -35,6 +35,7 @@ import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.cellview.client.CellBasedWidgetImpl;
 import com.google.gwt.user.cellview.client.CellBasedWidgetImplStandardBase;
+import com.google.gwt.user.client.impl.HistoryImpl;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.ScrollImpl;
 import com.google.gwt.user.client.ui.TreeItem.TreeItemImpl;
@@ -145,6 +146,9 @@ public final class GWT {
 	  }
 	  if (SafeHtmlTemplates.class.isAssignableFrom(classLiteral)) {
 		  return (T) createSafeHtmlTemplates(classLiteral);
+	  }
+	  if (HistoryImpl.class.equals(classLiteral)) {
+		  return (T) new HistoryImpl();
 	  }
 	  return null;
   }

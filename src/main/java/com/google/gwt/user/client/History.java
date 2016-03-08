@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
@@ -65,7 +66,7 @@ public class History {
 	private static HistoryImpl impl;
 	
 	static {
-		// impl = GWT.create(HistoryImpl.class);
+		 impl = GWT.create(HistoryImpl.class);
 		// if (!impl.init()) {
 		// // Set impl to null as a flag to no-op future calls.
 		// impl = null;
