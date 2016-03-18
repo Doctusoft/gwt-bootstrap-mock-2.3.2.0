@@ -20,6 +20,10 @@ import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
 
+import net.htmlparser.jericho.Attribute;
+import net.htmlparser.jericho.Segment;
+import net.htmlparser.jericho.Source;
+
 import com.doctusoft.gwtmock.Document;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Lists;
@@ -29,10 +33,6 @@ import com.google.gwt.event.dom.client.DomEvent.Type;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
-
-import net.htmlparser.jericho.Attribute;
-import net.htmlparser.jericho.Segment;
-import net.htmlparser.jericho.Source;
 
 /**
  * All HTML element interfaces derive from this class.
@@ -99,7 +99,7 @@ public class Element extends Node {
 	 * return <code>false</code>.
 	 */
 	public static boolean is(JavaScriptObject o) {
-		if (Node.is(o)) {
+		if (o instanceof Node) {
 			return is((Node) o);
 		}
 		return false;

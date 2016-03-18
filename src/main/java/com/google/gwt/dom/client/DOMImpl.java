@@ -39,6 +39,7 @@ public class DOMImpl {
 		ie.setValue("on");
 		return ie;
 	}
+	
 	/*-{
 	 var e = doc.createElement("INPUT");
 	 e.type = 'checkbox';
@@ -61,7 +62,9 @@ public class DOMImpl {
 	}
 	
 	public InputElement createInputRadioElement(Document doc, String name) {
-		return null;
+		InputElement result = createInputElement(doc, name);
+		result.setAttribute("type", "radio");
+		return result;
 	}
 	
 	public NativeEvent createKeyCodeEvent(Document document,
