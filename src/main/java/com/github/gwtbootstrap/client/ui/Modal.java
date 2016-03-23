@@ -185,30 +185,35 @@ public class Modal extends DivWidget implements HasVisibility, HasVisibleHandler
 	 *
 	 * @return title
 	 */
+	@Override
 	public String getTitle() {
 		return title;
 	}
 	
 	private void showHeader(boolean show) {
-		if (show)
+		if (show) {
 			header.setStyleName(Constants.MODAL_HEADER);
-		else
+		} else {
 			header.removeStyleName(Constants.MODAL_HEADER);
+		}
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void setAnimation(boolean animated) {
-		if (animated)
+		if (animated) {
 			addStyleName(Constants.FADE);
-		else
+		} else {
 			removeStyleName(Constants.FADE);
+		}
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean getAnimation() {
 		return getStyleName().contains(Constants.FADE);
 	}
@@ -283,8 +288,9 @@ public class Modal extends DivWidget implements HasVisibility, HasVisibleHandler
 	public void add(Widget w) {
 		if (w instanceof ModalFooter) {
 			super.add(w);
-		} else
+		} else {
 			body.add(w);
+		}
 	}
 	
 	/**
@@ -298,6 +304,7 @@ public class Modal extends DivWidget implements HasVisibility, HasVisibleHandler
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void show() {
 		checkAttachedOnShow();
 		changeVisibility("show");
@@ -330,6 +337,7 @@ public class Modal extends DivWidget implements HasVisibility, HasVisibleHandler
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void hide() {
 		changeVisibility("hide");
 	}
@@ -344,6 +352,7 @@ public class Modal extends DivWidget implements HasVisibility, HasVisibleHandler
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void toggle() {
 		changeVisibility("toggle");
 	}
@@ -384,8 +393,9 @@ public class Modal extends DivWidget implements HasVisibility, HasVisibleHandler
 	 * method is executed.
 	 */
 	protected void onShow(Event e) {
-		if (hideOthers)
+		if (hideOthers) {
 			hideShownModals();
+		}
 		fireEvent(new ShowEvent(e, getAutoTriggered(e)));
 	}
 	
@@ -583,6 +593,7 @@ public class Modal extends DivWidget implements HasVisibility, HasVisibleHandler
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public HandlerRegistration addHideHandler(HideHandler handler) {
 		return addHandler(handler, HideEvent.getType());
 	}
@@ -590,6 +601,7 @@ public class Modal extends DivWidget implements HasVisibility, HasVisibleHandler
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public HandlerRegistration addHiddenHandler(HiddenHandler handler) {
 		return addHandler(handler, HiddenEvent.getType());
 	}
@@ -597,6 +609,7 @@ public class Modal extends DivWidget implements HasVisibility, HasVisibleHandler
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public HandlerRegistration addShowHandler(ShowHandler handler) {
 		return addHandler(handler, ShowEvent.getType());
 	}
@@ -604,6 +617,7 @@ public class Modal extends DivWidget implements HasVisibility, HasVisibleHandler
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public HandlerRegistration addShownHandler(ShownHandler handler) {
 		return addHandler(handler, ShownEvent.getType());
 	}
@@ -624,6 +638,7 @@ public class Modal extends DivWidget implements HasVisibility, HasVisibleHandler
 	/**
 	 * @deprecated modal do not support setSize method
 	 */
+	@Deprecated
 	@Override
 	public void setSize(String width, String height) {
 		throw new UnsupportedOperationException("modal do not support setSize method");

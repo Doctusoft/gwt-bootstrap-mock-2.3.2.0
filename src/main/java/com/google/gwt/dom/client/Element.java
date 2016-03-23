@@ -72,7 +72,7 @@ public class Element extends Node {
 	 * Constant returned from {@link #getDraggable()}.
 	 */
 	public static final String DRAGGABLE_TRUE = "true";
-
+	
 	private String innerHtml;
 	
 	/**
@@ -94,8 +94,7 @@ public class Element extends Node {
 	}
 	
 	/**
-	 * Determines whether the given {@link JavaScriptObject} can be cast to an
-	 * {@link Element}. A <code>null</code> object will cause this method to
+	 * Determines whether the given {@link JavaScriptObject} can be cast to an {@link Element}. A <code>null</code> object will cause this method to
 	 * return <code>false</code>.
 	 */
 	public static boolean is(JavaScriptObject o) {
@@ -107,8 +106,7 @@ public class Element extends Node {
 	
 	/**
 	 * Determine whether the given {@link Node} can be cast to an {@link Element}.
-	 * A <code>null</code> node will cause this method to return
-	 * <code>false</code>.
+	 * A <code>null</code> node will cause this method to return <code>false</code>.
 	 */
 	public static boolean is(Node node) {
 		return (node != null) && (node.getNodeType() == Node.ELEMENT_NODE);
@@ -162,9 +160,7 @@ public class Element extends Node {
 	 * Note: Because the browser's normal dispatch mechanism is used, exceptions
 	 * thrown from within handlers triggered by this method cannot be caught by
 	 * wrapping this method in a try/catch block. Such exceptions will be caught
-	 * by the
-	 * {@link com.google.gwt.core.client.GWT#setUncaughtExceptionHandler(com.google.gwt.core.client.GWT.UncaughtExceptionHandler) uncaught exception handler}
-	 * as usual.
+	 * by the {@link com.google.gwt.core.client.GWT#setUncaughtExceptionHandler(com.google.gwt.core.client.GWT.UncaughtExceptionHandler) uncaught exception handler} as usual.
 	 * 
 	 * @param evt
 	 *           the event to be dispatched
@@ -216,8 +212,7 @@ public class Element extends Node {
 	
 	/**
 	 * Retrieves an attribute value by name. Attribute support can be
-	 * inconsistent across various browsers. Consider using the accessors in
-	 * {@link Element} and its specific subclasses to retrieve attributes and
+	 * inconsistent across various browsers. Consider using the accessors in {@link Element} and its specific subclasses to retrieve attributes and
 	 * properties.
 	 * 
 	 * @param name
@@ -233,9 +228,7 @@ public class Element extends Node {
 	 * The class attribute of the element. This attribute has been renamed due to
 	 * conflicts with the "class" keyword exposed by many languages.
 	 * 
-	 * @see <a
-	 *      href="http://www.w3.org/TR/1999/REC-html401-19991224/struct/global.html#adef-class">W3C
-	 *      HTML Specification</a>
+	 * @see <a href="http://www.w3.org/TR/1999/REC-html401-19991224/struct/global.html#adef-class">W3C HTML Specification</a>
 	 */
 	public final String getClassName() {
 		return MoreObjects.firstNonNull(attributes.get("class"), "");
@@ -274,8 +267,7 @@ public class Element extends Node {
 	/**
 	 * Returns the draggable attribute of this element.
 	 * 
-	 * @return one of {@link #DRAGGABLE_AUTO}, {@link #DRAGGABLE_FALSE}, or
-	 *         {@link #DRAGGABLE_TRUE}
+	 * @return one of {@link #DRAGGABLE_AUTO}, {@link #DRAGGABLE_FALSE}, or {@link #DRAGGABLE_TRUE}
 	 */
 	public final String getDraggable() {
 		return attributes.get("draggable");
@@ -323,9 +315,7 @@ public class Element extends Node {
 	/**
 	 * The element's identifier.
 	 * 
-	 * @see <a
-	 *      href="http://www.w3.org/TR/1999/REC-html401-19991224/struct/global.html#adef-id">W3C
-	 *      HTML Specification</a>
+	 * @see <a href="http://www.w3.org/TR/1999/REC-html401-19991224/struct/global.html#adef-id">W3C HTML Specification</a>
 	 */
 	public final String getId() {
 		return getAttribute("id");
@@ -435,8 +425,9 @@ public class Element extends Node {
 	 */
 	public final double getPropertyDouble(String name) {
 		String value = getPropertyString(name);
-		if (value == null)
+		if (value == null) {
 			return 0.0;
+		}
 		return Double.valueOf(value);
 	}
 	
@@ -449,8 +440,9 @@ public class Element extends Node {
 	 */
 	public final int getPropertyInt(String name) {
 		String value = getPropertyString(name);
-		if (value == null)
+		if (value == null) {
 			return 0;
+		}
 		return Integer.valueOf(value);
 	}
 	
@@ -504,8 +496,7 @@ public class Element extends Node {
 	 * The number of pixels that an element's content is scrolled from the left.
 	 * 
 	 * <p>
-	 * If the element is in RTL mode, this method will return a negative value of
-	 * the number of pixels scrolled from the right.
+	 * If the element is in RTL mode, this method will return a negative value of the number of pixels scrolled from the right.
 	 * </p>
 	 */
 	public final int getScrollLeft() {
@@ -532,8 +523,7 @@ public class Element extends Node {
 	/**
 	 * Gets a string representation of this element (as outer HTML).
 	 * 
-	 * We do not override {@link #toString()} because it is final in
-	 * {@link com.google.gwt.core.client.JavaScriptObject}.
+	 * We do not override {@link #toString()} because it is final in {@link com.google.gwt.core.client.JavaScriptObject}.
 	 * 
 	 * @return the string representation of this element
 	 */
@@ -565,8 +555,9 @@ public class Element extends Node {
 	 * @return the element's tag name
 	 */
 	public final String getTagName() {
-		if (tagName != null)
+		if (tagName != null) {
 			return tagName;
+		}
 		TagName tagName = getClass().getAnnotation(TagName.class);
 		if (tagName == null) {
 			throw new RuntimeException("no tagname for " + this.getClass());
@@ -585,8 +576,7 @@ public class Element extends Node {
 	 * Determines whether an element has an attribute with a given name.
 	 *
 	 * <p>
-	 * Note that IE, prior to version 8, will return false-positives for names
-	 * that collide with element properties (e.g., style, width, and so forth).
+	 * Note that IE, prior to version 8, will return false-positives for names that collide with element properties (e.g., style, width, and so forth).
 	 * </p>
 	 * 
 	 * @param name
@@ -705,10 +695,7 @@ public class Element extends Node {
 	 * Scrolls this element into view.
 	 * 
 	 * <p>
-	 * This method crawls up the DOM hierarchy, adjusting the scrollLeft and
-	 * scrollTop properties of each scrollable element to ensure that the
-	 * specified element is completely in view. It adjusts each scroll position by
-	 * the minimum amount necessary.
+	 * This method crawls up the DOM hierarchy, adjusting the scrollLeft and scrollTop properties of each scrollable element to ensure that the specified element is completely in view. It adjusts each scroll position by the minimum amount necessary.
 	 * </p>
 	 */
 	public final void scrollIntoView() {
@@ -732,9 +719,7 @@ public class Element extends Node {
 	 * The class attribute of the element. This attribute has been renamed due to
 	 * conflicts with the "class" keyword exposed by many languages.
 	 * 
-	 * @see <a
-	 *      href="http://www.w3.org/TR/1999/REC-html401-19991224/struct/global.html#adef-class">W3C
-	 *      HTML Specification</a>
+	 * @see <a href="http://www.w3.org/TR/1999/REC-html401-19991224/struct/global.html#adef-class">W3C HTML Specification</a>
 	 */
 	public final void setClassName(String className) {
 		attributes.put("class", className);
@@ -749,8 +734,7 @@ public class Element extends Node {
 																}-*/;
 	
 	/**
-	 * Changes the draggable attribute to one of {@link #DRAGGABLE_AUTO},
-	 * {@link #DRAGGABLE_FALSE}, or {@link #DRAGGABLE_TRUE}.
+	 * Changes the draggable attribute to one of {@link #DRAGGABLE_AUTO}, {@link #DRAGGABLE_FALSE}, or {@link #DRAGGABLE_TRUE}.
 	 * 
 	 * @param draggable
 	 *           a String constants
@@ -762,9 +746,7 @@ public class Element extends Node {
 	/**
 	 * The element's identifier.
 	 * 
-	 * @see <a
-	 *      href="http://www.w3.org/TR/1999/REC-html401-19991224/struct/global.html#adef-id">W3C
-	 *      HTML Specification</a>
+	 * @see <a href="http://www.w3.org/TR/1999/REC-html401-19991224/struct/global.html#adef-id">W3C HTML Specification</a>
 	 */
 	public final void setId(String id) {
 		setAttribute("id", id);
@@ -780,7 +762,7 @@ public class Element extends Node {
 		return result;
 	}
 	
-	protected List<Element> getChildElements() {
+	public List<Element> getChildElements() {
 		List<Element> result = Lists.newArrayList();
 		for (Node node : getChildNodes().getList()) {
 			if (node instanceof Element) {
@@ -796,7 +778,7 @@ public class Element extends Node {
 		for (net.htmlparser.jericho.Element element : elements) {
 			int elementStart = element.getBegin();
 			if (elementStart > index) {
-				//insert text node
+				// insert text node
 				Text text = new Text();
 				text.setData(container.subSequence(index - begin, elementStart - begin).toString());
 				target.appendChild(text);
@@ -890,9 +872,9 @@ public class Element extends Node {
 	 * @param value
 	 *           the new property value
 	 */
-	public final native void setPropertyInt(String name, int value) /*-{
-																							this[name] = value;
-																							}-*/;
+	public final void setPropertyInt(String name, int value) {
+		attributes.put(name, Integer.toString(value));
+	};
 	
 	/**
 	 * Sets a JSO property on this element.
