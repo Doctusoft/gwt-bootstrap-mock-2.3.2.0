@@ -76,9 +76,9 @@ public class OptionElement extends Element {
    * 
    * @see <a href="http://www.w3.org/TR/1999/REC-html401-19991224/interact/forms.html#adef-value-OPTION">W3C HTML Specification</a>
    */
-  public final native String getValue() /*-{
-    return this.value;
-  }-*/;
+  public final String getValue() {
+	 return getPropertyString("value");
+  };
 
   /**
    * Represents the value of the HTML selected attribute. The value of this

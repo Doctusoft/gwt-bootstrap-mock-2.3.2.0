@@ -43,7 +43,12 @@ public class ElementMapperImpl<T extends UIObject> {
     elem["__uiObjectID"] = null;
   }-*/;
 
-  private static native int getIndex(Element elem) /*-{
+  private static  int getIndex(Element elem) {
+	  String index = elem.getAttribute("__uiObjectID");
+	return (index == null) ? -1 : Integer.parseInt(index);
+  }
+	  /*-{
+  }
     var index = elem["__uiObjectID"];
     return (index == null) ? -1 : index;
   }-*/;
