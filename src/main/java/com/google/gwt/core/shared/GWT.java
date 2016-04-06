@@ -66,6 +66,10 @@ public final class GWT {
 		customSuppliers.add(customSupplier);
 	}
 	
+	public static void cleanCustomSuppliers() {
+		customSuppliers.clear();
+	}
+	
 	/**
 	 * Always <code>null</code> in Production Mode; in Development Mode provides
 	 * the implementation for certain methods.

@@ -424,7 +424,12 @@ public class DOMImpl {
 	 select.add(option, before);
 	}-*/;
 	
-	public native void selectClear(SelectElement select) /*-{
+	public void selectClear(SelectElement select) {
+		for (Element element : select.getChildElements()) {
+			element.removeFromParent();
+		}
+	}
+	/*-{
 																			select.options.length = 0;
 																			}-*/;
 	
