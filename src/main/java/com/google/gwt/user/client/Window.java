@@ -519,6 +519,7 @@ public class Window {
   private static int lastResizeHeight;
 
   private static final WindowImpl impl = GWT.create(WindowImpl.class);
+private static String title;
 
   /**
    * Adds a {@link CloseEvent} handler.
@@ -679,7 +680,10 @@ public class Window {
    * 
    * @return the window's title.
    */
-  public static native String getTitle() /*-{
+  public static String getTitle() {
+	  return title;
+  }
+  /*-{
     return $doc.title;
   }-*/;
 
@@ -851,7 +855,10 @@ public class Window {
    * 
    * @param title the new window title.
    */
-  public static native void setTitle(String title) /*-{
+  public static void setTitle(String title) {
+	Window.title = title;
+  }
+  /*-{
     $doc.title = title;
   }-*/;
 
