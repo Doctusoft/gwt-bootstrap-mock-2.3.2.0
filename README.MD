@@ -1,1 +1,1 @@
-mock classes for in-JVM gwt testing
+Mock classes for in-JVM gwt-bootstrap testing
