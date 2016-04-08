@@ -497,7 +497,10 @@ public class TabPanel extends DivWidget {
     }
 
     //@formatter:off
-    private native void setHandlerFunctions(Element e) /*-{
+    private void setHandlerFunctions(Element e) {
+    	// TODO nothing yet
+    }   
+    /*-{
         var that = this;
         var $this = $wnd.jQuery(e);
     
