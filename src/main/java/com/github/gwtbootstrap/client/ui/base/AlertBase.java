@@ -32,19 +32,17 @@ import com.google.gwt.user.client.ui.HasWidgets;
 
 /**
  * Base class for Alert widgets.
- *
+ * 
  * @author Dominik Mayer
  * @author Carlos Alexandro Becker
- * 			
- * @see <a
- *      href="http://getbootstrap.com/2.3.2/components.html#alerts">Bootstrap
- *      documentation</a>
- * 		
+ * 
+ * @see <a href="http://getbootstrap.com/2.3.2/components.html#alerts">Bootstrap documentation</a>
+ * 
  * @since 2.0.4.0
  */
 public abstract class AlertBase extends HtmlWidget implements IsAnimated,
 		HasCloseHandlers<AlertBase>, HasType<AlertType> {
-		
+	
 	private Close close;
 	
 	private HTMLPanel closeReplacement = new HTMLPanel("span", "");
@@ -66,7 +64,7 @@ public abstract class AlertBase extends HtmlWidget implements IsAnimated,
 	
 	/**
 	 * Initializes an Alert with a inner HTML.
-	 *
+	 * 
 	 * @param html
 	 *           inner HTML
 	 */
@@ -76,7 +74,7 @@ public abstract class AlertBase extends HtmlWidget implements IsAnimated,
 	
 	/**
 	 * Initializes an Alert with an optional close icon.
-	 *
+	 * 
 	 * @param html
 	 *           inner HTML
 	 * @param hasClose
@@ -95,7 +93,7 @@ public abstract class AlertBase extends HtmlWidget implements IsAnimated,
 	
 	/**
 	 * Initializes an Alert of given Type with a close icon.
-	 *
+	 * 
 	 * @param type
 	 *           of the Alert
 	 */
@@ -106,7 +104,7 @@ public abstract class AlertBase extends HtmlWidget implements IsAnimated,
 	
 	/**
 	 * Sets whether the Alert has a close icon or not.
-	 *
+	 * 
 	 * @param hasClose
 	 *           <code>false</code> if you don't want to have a close icon.
 	 *           Default: <code>true</code>
@@ -145,7 +143,7 @@ public abstract class AlertBase extends HtmlWidget implements IsAnimated,
 	
 	/**
 	 * has Close
-	 *
+	 * 
 	 * @return true:has close false:does not has close
 	 */
 	public boolean hasClose() {
@@ -154,7 +152,7 @@ public abstract class AlertBase extends HtmlWidget implements IsAnimated,
 	
 	/**
 	 * Gets heading's container widget
-	 *
+	 * 
 	 * @return heading's container
 	 */
 	protected HasWidgets getHeadingContainer() {
@@ -180,7 +178,7 @@ public abstract class AlertBase extends HtmlWidget implements IsAnimated,
 	
 	/**
 	 * Sets the type of the Alert.
-	 *
+	 * 
 	 * @param type
 	 */
 	public void setType(AlertType type) {
@@ -190,7 +188,7 @@ public abstract class AlertBase extends HtmlWidget implements IsAnimated,
 	/**
 	 * Sets the text of an optional heading. The implementation depends on the
 	 * subclass.
-	 *
+	 * 
 	 * @param text
 	 *           the new heading
 	 */
@@ -201,10 +199,9 @@ public abstract class AlertBase extends HtmlWidget implements IsAnimated,
 	
 	/**
 	 * Sets whether the Alert should be animated.
-	 *
+	 * 
 	 * @param animated
-	 *           <code>true</code> if the Alert should fade out. Default:
-	 *           <code>false</code>
+	 *           <code>true</code> if the Alert should fade out. Default: <code>false</code>
 	 */
 	public void setAnimation(boolean animated) {
 		this.fade = animated;
@@ -317,7 +314,10 @@ public abstract class AlertBase extends HtmlWidget implements IsAnimated,
         $wnd.jQuery(e).alert(e);
     }-*/;
 
-    private native void close(Element e)/*-{
+    private void close(Element e) {
+   	 // no-op
+    }
+    /*-{
         $wnd.jQuery(e).alert('close');
     }-*/;
     //@formatter:on
