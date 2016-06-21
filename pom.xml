@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.doctusoft</groupId>
 	<artifactId>gwt-bootstrap-mock-2.3.2.0</artifactId>
-	<version>0.1.1-SNAPSHOT</version>
+	<version>0.1.1</version>
 	<name>gwt-bootstrap-mock-2.3.2.0</name>
 	<packaging>jar</packaging>
 
